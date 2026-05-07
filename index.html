@@ -176,20 +176,9 @@
         <div class="detail-name" id="stationDetailName">PawPark SM North</div>
         <div class="detail-location">G/F near east parking · 8am – 10pm</div>
 
-        <!-- CCTV Live Feed Card -->
-        <div class="cctv-card">
-          <div class="cctv-left">
-            <div class="live-badge"><span class="live-dot"></span> LIVE</div>
-            <div class="cctv-label">Watch your dog anytime</div>
-            <div class="cctv-sub">Stream CCTV directly from the app after check-in</div>
-          </div>
-          <div class="cctv-preview" onclick="showCCTVModal()">
-            <div class="cctv-screen">
-              <div class="cctv-scanline"></div>
-              <div class="cctv-dog-icon">🐶</div>
-              <div class="cctv-tap">Tap to preview</div>
-            </div>
-          </div>
+        <!-- CCTV unlocks after check-in — available in My Bookings -->
+        <div class="cctv-locked-pill">
+          <span>📹</span> Live CCTV unlocks after drop-off check-in
         </div>
 
         <div class="detail-sec-label">Amenities</div>
@@ -457,8 +446,8 @@
       <div class="safety-promise" style="margin-top:16px;">
         <div class="sp-icon">📹</div>
         <div class="sp-text">
-          <div class="sp-title">CCTV access included</div>
-          <div class="sp-body">Watch your dog live from the app. Stream link sent with your booking QR after check-in.</div>
+          <div class="sp-title">CCTV unlocks after check-in</div>
+          <div class="sp-body">Once staff scans your QR at drop-off, live feed becomes available under My Bookings.</div>
         </div>
       </div>
     </div>
@@ -498,21 +487,11 @@
           <div class="qr-code-id" id="bookingId">#PP-00000</div>
         </div>
 
-        <!-- CCTV access card on confirmation -->
-        <div class="cctv-confirm-card" onclick="showCCTVModal()">
-          <div class="live-badge"><span class="live-dot"></span> LIVE</div>
-          <div class="cctv-confirm-text">
-            <div class="cctv-confirm-title">Watch your dog</div>
-            <div class="cctv-confirm-sub">Tap to open live CCTV feed</div>
-          </div>
-          <div class="cctv-confirm-icon">📹</div>
-        </div>
-
         <div class="steps-list">
           <div class="step-item"><span class="step-num">1</span>Arrive at the station with your dog</div>
           <div class="step-item"><span class="step-num">2</span>Show this QR at the front desk</div>
           <div class="step-item"><span class="step-num">3</span>Staff checks you in — you're free to go</div>
-          <div class="step-item"><span class="step-num">4</span>Watch via CCTV · Pick up on time</div>
+          <div class="step-item"><span class="step-num">4</span>Go to My Bookings to watch CCTV live</div>
         </div>
 
         <button class="btn-cta full-btn" onclick="showScreen('screen-home')" style="margin-top:24px;">Back to home</button>
@@ -536,6 +515,132 @@
         <div class="empty-msg">No bookings yet.<br>Your pup is waiting!</div>
         <button class="btn-cta" style="margin-top:20px;" onclick="startBooking()">Book a spot</button>
       </div>
+    </div>
+  </div>
+
+  <!-- ░░ ACTIVE BOOKING ░░ -->
+  <div id="screen-active" class="screen">
+    <div class="blob blob-home-1"></div>
+    <div class="sub-topbar">
+      <button class="back-btn" onclick="showScreen('screen-bookings')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <span class="sub-title" id="activeTitle">Active stay</span>
+      <div class="live-badge" style="margin-right:4px;"><span class="live-dot"></span> LIVE</div>
+    </div>
+
+    <div class="screen-scroll pad-screen">
+
+      <!-- overtime banner -->
+      <div id="overtimeBanner" class="overtime-banner hidden">
+        <span class="ot-icon">⚠️</span>
+        <div class="ot-text">
+          <div class="ot-title">Overtime</div>
+          <div class="ot-sub" id="otSubText">₱80 charged · next in 30:00</div>
+        </div>
+        <div class="ot-total" id="otTotal">+₱80</div>
+      </div>
+
+      <!-- timer bubble -->
+      <div class="timer-bubble">
+        <div class="timer-label" id="timerLabel">Time remaining</div>
+        <div class="timer-display" id="timerDisplay">--:--</div>
+        <div class="timer-sub" id="timerSub">Calculating…</div>
+        <div class="timer-bar-track">
+          <div class="timer-bar-fill" id="timerBarFill" style="width:100%"></div>
+        </div>
+      </div>
+
+      <!-- CCTV — unlocked here only -->
+      <div class="active-section-label">Live camera</div>
+      <div class="cctv-card" onclick="showCCTVModal()">
+        <div class="cctv-left">
+          <div class="live-badge"><span class="live-dot"></span> LIVE</div>
+          <div class="cctv-label" id="cctvPetName">Watching your pup</div>
+          <div class="cctv-sub">Tap to open full-screen feed</div>
+        </div>
+        <div class="cctv-preview">
+          <div class="cctv-screen">
+            <div class="cctv-scanline"></div>
+            <div class="cctv-dog-icon">🐶</div>
+            <div class="cctv-tap">Tap</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- feeding schedule -->
+      <div class="active-section-label">Feeding &amp; water schedule</div>
+      <div id="feedingSchedule" class="feeding-list"></div>
+
+      <!-- snack CTA -->
+      <div class="snack-cta-card" onclick="showSnackModal()">
+        <div class="snack-cta-left">
+          <div class="snack-cta-title">🦴 Treat time?</div>
+          <div class="snack-cta-sub">Order a snack for your pup right now</div>
+        </div>
+        <div class="snack-cta-arrow">›</div>
+      </div>
+
+      <div style="height:80px;"></div>
+    </div>
+  </div>
+
+  <!-- ░░ SNACK MODAL ░░ -->
+  <div id="snackModal" class="modal-overlay hidden" onclick="hideSnackModal()">
+    <div class="snack-modal-card" onclick="event.stopPropagation()">
+      <div class="snack-modal-header">
+        <div class="snack-modal-title">🦴 Order a snack</div>
+        <button class="modal-close" onclick="hideSnackModal()">✕</button>
+      </div>
+      <div class="snack-modal-sub">Delivered to your pup's bay in minutes</div>
+      <div class="snack-item">
+        <div class="snack-icon">🦴</div>
+        <div class="snack-info"><div class="snack-name">Milk-bone treat pack</div><div class="snack-meta">6 pcs · low sugar</div></div>
+        <div class="snack-price">₱45</div>
+        <button class="snack-add-btn" onclick="addSnack(0,45)">+</button>
+      </div>
+      <div class="snack-item">
+        <div class="snack-icon">🥩</div>
+        <div class="snack-info"><div class="snack-name">Chicken jerky strips</div><div class="snack-meta">3 pcs · high protein</div></div>
+        <div class="snack-price">₱65</div>
+        <button class="snack-add-btn" onclick="addSnack(1,65)">+</button>
+      </div>
+      <div class="snack-item">
+        <div class="snack-icon">🧀</div>
+        <div class="snack-info"><div class="snack-name">Cheese bites</div><div class="snack-meta">Bite-sized · calcium rich</div></div>
+        <div class="snack-price">₱55</div>
+        <button class="snack-add-btn" onclick="addSnack(2,55)">+</button>
+      </div>
+      <div class="snack-item">
+        <div class="snack-icon">🍠</div>
+        <div class="snack-info"><div class="snack-name">Sweet potato chews</div><div class="snack-meta">Grain-free · digestive friendly</div></div>
+        <div class="snack-price">₱50</div>
+        <button class="snack-add-btn" onclick="addSnack(3,50)">+</button>
+      </div>
+      <div id="snackCartRow" class="snack-cart-row hidden">
+        <div class="snack-cart-label" id="snackCartLabel">0 items · ₱0</div>
+        <button class="snack-order-btn" onclick="confirmSnackOrder()">Order now 🐾</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ░░ CCTV MODAL ░░ -->
+  <div id="cctvModal" class="modal-overlay hidden" onclick="hideCCTVModal()">
+    <div class="cctv-modal-card" onclick="event.stopPropagation()">
+      <div class="cctv-modal-header">
+        <div class="live-badge"><span class="live-dot"></span> LIVE FEED</div>
+        <button class="modal-close" onclick="hideCCTVModal()">✕</button>
+      </div>
+      <div class="cctv-modal-screen">
+        <div class="cctv-scanline"></div>
+        <div class="cctv-modal-dog">🐶</div>
+        <div class="cctv-corner tl"></div>
+        <div class="cctv-corner tr"></div>
+        <div class="cctv-corner bl"></div>
+        <div class="cctv-corner br"></div>
+        <div class="cctv-timestamp" id="cctvTime">00:00:00</div>
+      </div>
+      <div class="cctv-modal-note">Secured with your booking QR · footage stored 72 hrs</div>
     </div>
   </div>
 
