@@ -1,4 +1,7 @@
-// ===== STATE =====
+// ══════════════════════════════════
+//  PAWPARK — app logic
+// ══════════════════════════════════
+
 var booking = {
   station: 'SM North Edsa',
   dogName: '',
@@ -15,35 +18,42 @@ var booking = {
 };
 
 var allBookings = [];
+var cctvInterval = null;
 
-// ===== SCREEN MANAGEMENT =====
+// ── SCREEN TRANSITIONS ──
 function showScreen(id) {
-  var screens = document.querySelectorAll('.screen');
+  var current = document.querySelector('.screen.active');
   var target = document.getElementById(id);
-  screens.forEach(function(s) {
-    if (s.classList.contains('active')) {
-      s.classList.add('slide-out');
-      s.classList.remove('active');
-      setTimeout(function() { s.classList.remove('slide-out'); }, 260);
-    }
-  });
+  if (!target || current === target) return;
+
+  if (current) {
+    current.classList.add('exit');
+    current.classList.remove('active');
+    setTimeout(function() {
+      current.classList.remove('exit');
+    }, 300);
+  }
+
   setTimeout(function() {
     target.classList.add('active');
-  }, 30);
+  }, 40);
+
+  if (id === 'screen-bookings') renderBookings();
 }
 
-// ===== SPLASH → HOME =====
+// ── SPLASH → HOME ──
 window.addEventListener('load', function() {
   setTimeout(function() {
     showScreen('screen-home');
-  }, 2400);
+  }, 2500);
 });
 
-// ===== HOME =====
+// ── HOME ──
 function toggleMapView() {
   var list = document.getElementById('listView');
   var map = document.getElementById('mapView');
   var btn = document.getElementById('mapToggleBtn');
+  if (!list || !map) return;
   if (list.classList.contains('hidden')) {
     list.classList.remove('hidden');
     map.classList.add('hidden');
@@ -55,147 +65,171 @@ function toggleMapView() {
   }
 }
 
-// ===== STATION DETAIL =====
+// ── STATION DETAIL ──
 function showStationDetail(name) {
   booking.station = name;
   var icons = { 'SM North Edsa': '🏪', 'Trinoma': '🏬', 'Robinsons Galleria': '🛍️' };
   var slots = { 'SM North Edsa': '4 slots open', 'Trinoma': '2 slots open', 'Robinsons Galleria': '6 slots open' };
-  document.getElementById('stationTitle').textContent = 'PawPark ' + name;
-  document.getElementById('stationDetailName').textContent = 'PawPark ' + name;
-  document.getElementById('stationSlots').textContent = slots[name] || '—';
-  document.querySelector('.station-photo-icon').textContent = icons[name] || '🏪';
+
+  var titleEl = document.getElementById('stationTitle');
+  var nameEl = document.getElementById('stationDetailName');
+  var slotsEl = document.getElementById('stationSlots');
+  var iconEl = document.getElementById('detailIcon');
+
+  if (titleEl) titleEl.textContent = 'PawPark ' + name;
+  if (nameEl) nameEl.textContent = 'PawPark ' + name;
+  if (slotsEl) slotsEl.textContent = slots[name] || '—';
+  if (iconEl) iconEl.textContent = icons[name] || '🏪';
+
   showScreen('screen-station');
 }
 
-// ===== BOOKING FLOW =====
+// ── BOOKING FLOW ──
 function startBooking() {
   showScreen('screen-book1');
 }
 
-function goStep(step) {
-  if (step === 6) { buildSummary(); }
-  showScreen('screen-book' + step);
+function goStep(n) {
+  if (n === 6) buildSummary();
+  showScreen('screen-book' + n);
 }
 
-// Step 1 — station select
+// Step 1
 function selectStation(name, optId) {
   booking.station = name;
-  var opts = ['bsOpt1', 'bsOpt2', 'bsOpt3'];
-  opts.forEach(function(id) {
-    var el = document.getElementById(id);
-    if (el) {
-      el.classList.remove('selected');
-    }
-  });
-  var sel = document.getElementById(optId);
-  if (sel) sel.classList.add('selected');
-}
-
-// Step 2 — pet details
-function selectSize(size) {
-  booking.dogSize = size;
-  ['szS', 'szM', 'szL'].forEach(function(id) {
-    var el = document.getElementById(id);
-    if (el) el.classList.remove('selected');
-  });
-  var map = { 'S': 'szS', 'M': 'szM', 'L': 'szL' };
-  var el = document.getElementById(map[size]);
-  if (el) el.classList.add('selected');
-}
-
-function handlePhoto(input) {
-  if (input.files && input.files[0]) {
-    document.getElementById('photoLabel').textContent = '✅ ' + input.files[0].name;
-  }
-}
-
-// Step 3 — duration
-function selectDur(label, price, optId) {
-  booking.duration = label;
-  booking.durationPrice = price;
-  ['dur30', 'dur60', 'dur120', 'durCustom'].forEach(function(id) {
+  ['bsOpt1', 'bsOpt2', 'bsOpt3'].forEach(function(id) {
     var el = document.getElementById(id);
     if (el) el.classList.remove('selected');
   });
   var el = document.getElementById(optId);
   if (el) el.classList.add('selected');
-  var wrap = document.getElementById('customTimeWrap');
-  if (optId === 'durCustom') {
-    wrap.classList.remove('hidden');
-  } else {
-    wrap.classList.add('hidden');
+}
+
+// Step 2
+function selectSize(sz) {
+  booking.dogSize = sz;
+  var map = { S: 'szS', M: 'szM', L: 'szL' };
+  ['szS', 'szM', 'szL'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.classList.remove('sel');
+  });
+  var el = document.getElementById(map[sz]);
+  if (el) el.classList.add('sel');
+}
+
+function handlePhoto(input) {
+  if (input.files && input.files[0]) {
+    var lbl = document.getElementById('photoLabel');
+    if (lbl) lbl.textContent = '✅  ' + input.files[0].name;
   }
 }
 
-function calcCustom(mins) {
-  var m = parseInt(mins) || 0;
-  var price = Math.round(m * 2.5);
-  booking.duration = m + ' mins';
+// Step 3
+function selectDur(label, price, optId) {
+  booking.duration = label;
   booking.durationPrice = price;
+  ['dur30', 'dur60', 'dur120', 'durCustom'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.classList.remove('sel');
+  });
+  var el = document.getElementById(optId);
+  if (el) el.classList.add('sel');
+  var wrap = document.getElementById('customWrap');
+  if (wrap) {
+    if (optId === 'durCustom') wrap.classList.remove('hidden');
+    else wrap.classList.add('hidden');
+  }
 }
 
-// Step 4 — food
+function calcCustom(val) {
+  var m = parseInt(val) || 0;
+  booking.duration = m + ' mins';
+  booking.durationPrice = Math.round(m * 2.5);
+}
+
+// Step 4
 function selectFood(label, price, optId) {
   booking.food = label;
   booking.foodPrice = price;
-  var foodOpts = ['foodStation', 'foodTreats', 'foodOwn', 'foodNone'];
-  var radios = ['fradStation', 'fradTreats', 'fradOwn', 'fradNone'];
-  foodOpts.forEach(function(id, i) {
+  var opts = ['foodStation', 'foodTreats', 'foodOwn', 'foodNone'];
+  var dots = ['fdStation', 'fdTreats', 'fdOwn', 'fdNone'];
+  opts.forEach(function(id) {
     var el = document.getElementById(id);
-    var rad = document.getElementById(radios[i]);
-    if (el) el.classList.remove('selected');
-    if (rad) { rad.textContent = '○'; rad.classList.remove('selected-radio'); }
+    if (el) el.classList.remove('sel');
   });
-  var sel = document.getElementById(optId);
-  if (sel) sel.classList.add('selected');
-  var radId = optId.replace('food', 'frad');
-  var rad = document.getElementById(radId);
-  if (rad) { rad.textContent = '●'; rad.classList.add('selected-radio'); }
+  dots.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.classList.remove('sel-dot');
+  });
+  var selEl = document.getElementById(optId);
+  if (selEl) selEl.classList.add('sel');
+  var dotId = optId.replace('food', 'fd');
+  var dotEl = document.getElementById(dotId);
+  if (dotEl) dotEl.classList.add('sel-dot');
 }
 
-// Step 6 — summary
+// Step 6 summary
 function buildSummary() {
-  booking.dogName = (document.getElementById('dogName') || {}).value || '';
-  booking.petNotes = (document.getElementById('petNotes') || {}).value || '';
-  booking.dropDate = (document.getElementById('dropDate') || {}).value || '';
-  booking.dropTime = (document.getElementById('dropTime') || {}).value || '';
-  booking.pickTime = (document.getElementById('pickTime') || {}).value || '';
+  var dogNameEl = document.getElementById('dogName');
+  var petNotesEl = document.getElementById('petNotes');
+  var dropDateEl = document.getElementById('dropDate');
+  var dropTimeEl = document.getElementById('dropTime');
+  var pickTimeEl = document.getElementById('pickTime');
 
-  document.getElementById('sumStation').textContent = 'PawPark ' + booking.station;
-  var petLabel = booking.dogName ? booking.dogName + ' (' + booking.dogSize + ')' : booking.dogSize + ' dog';
-  document.getElementById('sumPet').textContent = petLabel;
-  document.getElementById('sumDur').textContent = booking.duration;
-  document.getElementById('sumFood').textContent = booking.food;
-  var sched = booking.dropDate && booking.dropTime ? booking.dropDate + ' @ ' + booking.dropTime : '—';
-  document.getElementById('sumSchedule').textContent = sched;
-  var total = booking.durationPrice + booking.foodPrice;
-  document.getElementById('sumTotal').textContent = '₱' + total;
+  booking.dogName = dogNameEl ? dogNameEl.value : '';
+  booking.petNotes = petNotesEl ? petNotesEl.value : '';
+  booking.dropDate = dropDateEl ? dropDateEl.value : '';
+  booking.dropTime = dropTimeEl ? dropTimeEl.value : '';
+  booking.pickTime = pickTimeEl ? pickTimeEl.value : '';
+
+  var petLabel = (booking.dogName || 'Your dog') + ' · ' + ({ S: 'Small', M: 'Medium', L: 'Large' }[booking.dogSize] || '');
+  var schedLabel = booking.dropDate && booking.dropTime
+    ? booking.dropDate + ' @ ' + booking.dropTime
+    : '—';
+
+  var s = document.getElementById('sumStation');
+  var p = document.getElementById('sumPet');
+  var d = document.getElementById('sumDur');
+  var f = document.getElementById('sumFood');
+  var sc = document.getElementById('sumSchedule');
+  var t = document.getElementById('sumTotal');
+
+  if (s) s.textContent = 'PawPark ' + booking.station;
+  if (p) p.textContent = petLabel;
+  if (d) d.textContent = booking.duration;
+  if (f) f.textContent = booking.food;
+  if (sc) sc.textContent = schedLabel;
+  if (t) t.textContent = '₱' + (booking.durationPrice + booking.foodPrice);
 }
 
 function selectPay(optId) {
   booking.payment = optId;
   ['payGcash', 'payMaya', 'payCash'].forEach(function(id) {
     var el = document.getElementById(id);
-    if (el) el.classList.remove('selected');
+    if (el) el.classList.remove('sel');
   });
   var el = document.getElementById(optId);
-  if (el) el.classList.add('selected');
+  if (el) el.classList.add('sel');
 }
 
-// ===== CONFIRM BOOKING =====
+// ── CONFIRM ──
 function confirmBooking() {
-  booking.dogName = (document.getElementById('dogName') || {}).value || 'Your pup';
-  booking.dropDate = (document.getElementById('dropDate') || {}).value || '';
-  booking.dropTime = (document.getElementById('dropTime') || {}).value || '';
-  booking.pickTime = (document.getElementById('pickTime') || {}).value || '';
+  var dogNameEl = document.getElementById('dogName');
+  var dropDateEl = document.getElementById('dropDate');
+  var dropTimeEl = document.getElementById('dropTime');
+
+  booking.dogName = dogNameEl ? (dogNameEl.value || 'Your pup') : 'Your pup';
+  booking.dropDate = dropDateEl ? dropDateEl.value : '';
+  booking.dropTime = dropTimeEl ? dropTimeEl.value : '';
 
   var id = '#PP-' + Math.floor(10000 + Math.random() * 90000);
-  document.getElementById('bookingId').textContent = id;
+  var idEl = document.getElementById('bookingId');
+  if (idEl) idEl.textContent = id;
 
   allBookings.unshift({
     id: id,
     station: 'PawPark ' + booking.station,
-    pet: booking.dogName || 'Dog',
+    pet: booking.dogName,
     duration: booking.duration,
     date: booking.dropDate,
     time: booking.dropTime,
@@ -204,40 +238,64 @@ function confirmBooking() {
   });
 
   showScreen('screen-confirm');
-  var anim = document.getElementById('confirmAnim');
-  anim.style.animation = 'none';
-  void anim.offsetHeight;
-  anim.style.animation = '';
+
+  // re-trigger confirm animation
+  var paw = document.getElementById('confirmPaw');
+  if (paw) {
+    paw.style.animation = 'none';
+    void paw.offsetWidth;
+    paw.style.animation = '';
+  }
 }
 
-// ===== MY BOOKINGS =====
+// ── CCTV MODAL ──
+function showCCTVModal() {
+  var modal = document.getElementById('cctvModal');
+  if (modal) modal.classList.remove('hidden');
+  startCCTVClock();
+}
+
+function hideCCTVModal() {
+  var modal = document.getElementById('cctvModal');
+  if (modal) modal.classList.add('hidden');
+  if (cctvInterval) { clearInterval(cctvInterval); cctvInterval = null; }
+}
+
+function startCCTVClock() {
+  var el = document.getElementById('cctvTime');
+  if (!el) return;
+  if (cctvInterval) clearInterval(cctvInterval);
+  cctvInterval = setInterval(function() {
+    var now = new Date();
+    var h = String(now.getHours()).padStart(2, '0');
+    var m = String(now.getMinutes()).padStart(2, '0');
+    var s = String(now.getSeconds()).padStart(2, '0');
+    el.textContent = h + ':' + m + ':' + s;
+  }, 1000);
+}
+
+// ── MY BOOKINGS ──
 function renderBookings() {
   var list = document.getElementById('bookingsList');
   var empty = document.getElementById('noBookings');
+  if (!list) return;
+
   if (!allBookings.length) {
-    if (list) list.innerHTML = '';
+    list.innerHTML = '';
     if (empty) empty.classList.remove('hidden');
     return;
   }
-  if (empty) empty.classList.add('hidden');
-  if (list) {
-    list.innerHTML = allBookings.map(function(b) {
-      return '<div class="booking-item">' +
-        '<div class="bi-header">' +
-          '<span class="bi-name">' + b.station + '</span>' +
-          '<span class="bi-status confirmed">' + b.status + '</span>' +
-        '</div>' +
-        '<div class="bi-row">🐶 ' + b.pet + ' · ' + b.duration + '</div>' +
-        (b.date ? '<div class="bi-row">📅 ' + b.date + (b.time ? ' @ ' + b.time : '') + '</div>' : '') +
-        '<div class="bi-row">💰 ₱' + b.total + ' · ' + b.id + '</div>' +
-      '</div>';
-    }).join('');
-  }
-}
 
-// Hook bookings render on screen show
-var origShowScreen = showScreen;
-showScreen = function(id) {
-  if (id === 'screen-bookings') { renderBookings(); }
-  origShowScreen(id);
-};
+  if (empty) empty.classList.add('hidden');
+  list.innerHTML = allBookings.map(function(b) {
+    return '<div class="booking-item">' +
+      '<div class="bi-hdr">' +
+        '<span class="bi-name">' + b.station + '</span>' +
+        '<span class="bi-status ok">' + b.status + '</span>' +
+      '</div>' +
+      '<div class="bi-row">🐶 ' + b.pet + ' &nbsp;·&nbsp; ' + b.duration + '</div>' +
+      (b.date ? '<div class="bi-row">📅 ' + b.date + (b.time ? ' @ ' + b.time : '') + '</div>' : '') +
+      '<div class="bi-row">💰 ₱' + b.total + ' &nbsp;·&nbsp; ' + b.id + '</div>' +
+    '</div>';
+  }).join('');
+}
