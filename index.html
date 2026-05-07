@@ -5,646 +5,432 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>PawPark</title>
   <link rel="stylesheet" href="pawpark.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
 </head>
 <body>
 <div id="app">
 
-  <!-- ░░ SPLASH ░░ -->
+  <!-- SPLASH -->
   <div id="screen-splash" class="screen active">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
+    <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="blob b4"></div>
     <div class="splash-content">
-      <div class="splash-paw-anim">🐾</div>
+      <div class="splash-ring"><span class="splash-dog">🐶</span></div>
       <div class="splash-wordmark">PawPark</div>
       <div class="splash-sub">safe stays · near malls · supervised</div>
       <div class="splash-track"><div class="splash-fill"></div></div>
     </div>
   </div>
 
-  <!-- ░░ HOME ░░ -->
+  <!-- HOME -->
   <div id="screen-home" class="screen">
-    <div class="blob blob-home-1"></div>
-    <div class="blob blob-home-2"></div>
-
-    <div class="home-topbar">
+    <div class="blob bh1"></div><div class="blob bh2"></div><div class="blob bh3"></div>
+    <div class="topbar glass-bar">
       <div class="home-logo">🐾 PawPark</div>
-      <div class="home-topbar-actions">
-        <button class="top-icon-btn" onclick="showScreen('screen-bookings')">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <div class="topbar-actions">
+        <button class="icon-btn" onclick="showScreen('screen-bookings')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         </button>
-        <button class="top-icon-btn">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <button class="icon-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </button>
       </div>
     </div>
-
     <div class="home-scroll">
-      <div class="hero-bubble">
-        <div class="hero-text-wrap">
+      <div class="hero-glass">
+        <div class="hero-glow"></div>
+        <div class="hero-text-col">
           <div class="hero-eyebrow">📍 Metro Manila</div>
           <div class="hero-title">A safe spot<br>for your pup</div>
           <div class="hero-chips">
-            <span class="hero-chip">👁 CCTV live</span>
+            <span class="hero-chip">👁️ CCTV</span>
             <span class="hero-chip">👩‍⚕️ Staffed</span>
             <span class="hero-chip">❄️ A/C</span>
           </div>
         </div>
-        <div class="hero-dog-wrap">
-          <div class="hero-dog">🐶</div>
-        </div>
+        <span class="hero-dog">🐶</span>
       </div>
 
-      <!-- Trust bar -->
-      <div class="trust-strip">
-        <div class="trust-item">
-          <span class="trust-icon">📹</span>
-          <span>CCTV access<br>via app</span>
-        </div>
-        <div class="trust-div"></div>
-        <div class="trust-item">
-          <span class="trust-icon">🔒</span>
-          <span>Secure<br>QR check-in</span>
-        </div>
-        <div class="trust-div"></div>
-        <div class="trust-item">
-          <span class="trust-icon">⭐</span>
-          <span>Trained<br>pet staff</span>
-        </div>
+      <div class="trust-glass">
+        <div class="trust-item"><span class="ti-ico">📹</span><span class="ti-lbl">Live CCTV<br>via app</span></div>
+        <div class="trust-sep"></div>
+        <div class="trust-item"><span class="ti-ico">🔐</span><span class="ti-lbl">QR<br>check-in</span></div>
+        <div class="trust-sep"></div>
+        <div class="trust-item"><span class="ti-ico">🏅</span><span class="ti-lbl">Certified<br>staff</span></div>
       </div>
 
-      <!-- Stations -->
       <div class="section-row">
         <div class="section-heading">Stations near you</div>
-        <button class="pill-toggle" id="mapToggleBtn" onclick="toggleMapView()">🗺 Map</button>
+        <button class="pill-toggle" id="mapToggleBtn" onclick="toggleMapView()">🗺️ Map</button>
       </div>
 
       <div id="listView">
-        <div class="station-card" onclick="showStationDetail('SM North Edsa')">
-          <div class="sc-left">
-            <div class="sc-icon-wrap"><span class="sc-icon">🏪</span></div>
+        <div class="station-glass" onclick="showStationDetail('SM North Edsa')">
+          <div class="sg-ico-wrap"><span class="sg-ico">🏪</span></div>
+          <div class="sg-body">
+            <div class="sg-name">PawPark SM North</div>
+            <div class="sg-meta">📍 0.3 km · 8am–10pm</div>
+            <div class="sg-tags"><span class="gtag green">🟢 4 slots</span><span class="gtag blue">📹</span><span class="gtag blue">❄️</span></div>
           </div>
-          <div class="sc-body">
-            <div class="sc-name">PawPark SM North</div>
-            <div class="sc-meta">0.3 km away · 8am – 10pm</div>
-            <div class="sc-tags">
-              <span class="stag green">4 slots open</span>
-              <span class="stag blue">CCTV</span>
-              <span class="stag blue">A/C</span>
-            </div>
-          </div>
-          <div class="sc-arrow">›</div>
+          <div class="sg-arrow">›</div>
         </div>
-
-        <div class="station-card" onclick="showStationDetail('Trinoma')">
-          <div class="sc-left">
-            <div class="sc-icon-wrap"><span class="sc-icon">🏬</span></div>
+        <div class="station-glass" onclick="showStationDetail('Trinoma')">
+          <div class="sg-ico-wrap"><span class="sg-ico">🏬</span></div>
+          <div class="sg-body">
+            <div class="sg-name">PawPark Trinoma</div>
+            <div class="sg-meta">📍 0.7 km · 9am–9pm</div>
+            <div class="sg-tags"><span class="gtag amber">🟡 2 slots</span><span class="gtag blue">📹</span></div>
           </div>
-          <div class="sc-body">
-            <div class="sc-name">PawPark Trinoma</div>
-            <div class="sc-meta">0.7 km away · 9am – 9pm</div>
-            <div class="sc-tags">
-              <span class="stag amber">2 slots open</span>
-              <span class="stag blue">CCTV</span>
-            </div>
-          </div>
-          <div class="sc-arrow">›</div>
+          <div class="sg-arrow">›</div>
         </div>
-
-        <div class="station-card" onclick="showStationDetail('Robinsons Galleria')">
-          <div class="sc-left">
-            <div class="sc-icon-wrap"><span class="sc-icon">🛍️</span></div>
+        <div class="station-glass" onclick="showStationDetail('Robinsons Galleria')">
+          <div class="sg-ico-wrap"><span class="sg-ico">🛍️</span></div>
+          <div class="sg-body">
+            <div class="sg-name">PawPark Robinsons</div>
+            <div class="sg-meta">📍 1.2 km · 10am–9pm</div>
+            <div class="sg-tags"><span class="gtag green">🟢 6 slots</span><span class="gtag blue">👩‍⚕️</span><span class="gtag blue">❄️</span></div>
           </div>
-          <div class="sc-body">
-            <div class="sc-name">PawPark Robinsons</div>
-            <div class="sc-meta">1.2 km away · 10am – 9pm</div>
-            <div class="sc-tags">
-              <span class="stag green">6 slots open</span>
-              <span class="stag blue">Staff</span>
-              <span class="stag blue">A/C</span>
-            </div>
-          </div>
-          <div class="sc-arrow">›</div>
+          <div class="sg-arrow">›</div>
         </div>
       </div>
 
       <div id="mapView" class="hidden">
-        <div class="map-bubble">
-          <div class="map-placeholder-text">📍 Interactive map</div>
-          <div class="map-pin" style="top:28%;left:36%;" onclick="showStationDetail('SM North Edsa')">
-            <div class="mpin orange"></div>
-            <div class="mpin-label">SM North <span>4</span></div>
+        <div class="map-glass-wrap">
+          <div class="map-search-row">
+            <span class="map-search-ico">🔍</span>
+            <input type="text" id="mapSearchInput" class="map-search-input" placeholder="Search any location…" oninput="debounceSearch(this.value)" autocomplete="off" />
+            <button class="map-clear hidden" id="mapSearchClear" onclick="clearMapSearch()">✕</button>
           </div>
-          <div class="map-pin" style="top:50%;left:58%;" onclick="showStationDetail('Trinoma')">
-            <div class="mpin amber"></div>
-            <div class="mpin-label">Trinoma <span>2</span></div>
-          </div>
-          <div class="map-pin" style="top:66%;left:22%;" onclick="showStationDetail('Robinsons Galleria')">
-            <div class="mpin orange"></div>
-            <div class="mpin-label">Robinsons <span>6</span></div>
-          </div>
+          <div id="searchSuggestions" class="search-suggestions hidden"></div>
+          <div id="leafletMap" class="leaflet-map"></div>
         </div>
       </div>
 
-      <div style="height: 90px;"></div>
+      <div style="height:100px;"></div>
     </div>
-
-    <div class="float-cta">
-      <button class="btn-cta" onclick="startBooking()">Book a spot &nbsp;🐾</button>
-    </div>
+    <div class="float-cta"><button class="btn-cta" onclick="startBooking()">Book a spot &nbsp;🐾</button></div>
   </div>
 
-  <!-- ░░ STATION DETAIL ░░ -->
+  <!-- STATION DETAIL -->
   <div id="screen-station" class="screen">
-    <div class="blob blob-detail-1"></div>
-    <div class="sub-topbar">
-      <button class="back-btn" onclick="showScreen('screen-home')">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
-      <span class="sub-title" id="stationTitle">Station</span>
-      <span style="width:36px;"></span>
+    <div class="blob bd1"></div><div class="blob bd2"></div>
+    <div class="topbar glass-bar">
+      <button class="back-btn" onclick="showScreen('screen-home')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <span class="topbar-title" id="stationTitle">Station</span>
+      <span style="width:36px"></span>
     </div>
-
     <div class="screen-scroll">
-      <div class="detail-hero">
-        <div class="detail-hero-icon" id="detailIcon">🏪</div>
-        <div class="detail-slot-badge" id="stationSlots">4 slots open</div>
+      <div class="detail-hero-glass">
+        <div class="detail-hero-glow"></div>
+        <span class="detail-hero-ico" id="detailIcon">🏪</span>
+        <div class="detail-slot-pill" id="stationSlots">4 slots open</div>
       </div>
-
       <div class="detail-body">
         <div class="detail-name" id="stationDetailName">PawPark SM North</div>
-        <div class="detail-location">G/F near east parking · 8am – 10pm</div>
-
-        <!-- CCTV unlocks after check-in — available in My Bookings -->
-        <div class="cctv-locked-pill">
-          <span>📹</span> Live CCTV unlocks after drop-off check-in
-        </div>
-
-        <div class="detail-sec-label">Amenities</div>
+        <div class="detail-loc">🗺️ G/F near east parking · 8am–10pm</div>
+        <div class="cctv-locked-pill">🔒 Live CCTV unlocks after drop-off check-in</div>
+        <div class="sec-label">✨ Amenities</div>
         <div class="amenity-wrap">
-          <div class="amenity-pill">💧 Fresh water</div>
-          <div class="amenity-pill">❄️ A/C cooling</div>
-          <div class="amenity-pill">📹 24/7 CCTV</div>
-          <div class="amenity-pill">👩‍⚕️ Trained staff</div>
-          <div class="amenity-pill">🧴 Grooming kit</div>
-          <div class="amenity-pill">🛏 Comfy bay</div>
+          <div class="amenity-glass">💧 Fresh water</div>
+          <div class="amenity-glass">❄️ A/C cooling</div>
+          <div class="amenity-glass">📹 24/7 CCTV</div>
+          <div class="amenity-glass">👩‍⚕️ Trained staff</div>
+          <div class="amenity-glass">🧴 Grooming kit</div>
+          <div class="amenity-glass">🛏️ Comfy bay</div>
         </div>
-
-        <!-- Staff trust card -->
-        <div class="staff-card">
-          <div class="staff-avatar">👩‍⚕️</div>
-          <div class="staff-info">
-            <div class="staff-name">Station Staff on duty</div>
-            <div class="staff-meta">Pet first-aid certified · 3 yrs experience</div>
-          </div>
-          <div class="staff-badge">✓ Verified</div>
+        <div class="staff-glass">
+          <span class="staff-ava">👩‍⚕️</span>
+          <div class="staff-info"><div class="staff-name">Station Staff on duty</div><div class="staff-meta">Pet first-aid certified · 3 yrs exp</div></div>
+          <span class="staff-badge">✅ Verified</span>
         </div>
-
-        <div class="detail-sec-label">Rates</div>
+        <div class="sec-label">💰 Rates</div>
         <div class="rates-row">
-          <div class="rate-bubble">
-            <div class="rate-dur">30 min</div>
-            <div class="rate-amt">₱80</div>
-          </div>
-          <div class="rate-bubble">
-            <div class="rate-dur">1 hour</div>
-            <div class="rate-amt">₱130</div>
-          </div>
-          <div class="rate-bubble">
-            <div class="rate-dur">2 hours</div>
-            <div class="rate-amt">₱220</div>
-          </div>
+          <div class="rate-glass"><div class="rate-dur">30 min</div><div class="rate-amt">₱80</div></div>
+          <div class="rate-glass"><div class="rate-dur">1 hour</div><div class="rate-amt">₱130</div></div>
+          <div class="rate-glass"><div class="rate-dur">2 hours</div><div class="rate-amt">₱220</div></div>
         </div>
-
-        <div class="safety-promise">
-          <div class="sp-icon">🛡️</div>
-          <div class="sp-text">
-            <div class="sp-title">PawPark Safety Promise</div>
-            <div class="sp-body">Every bay is sanitized between stays. CCTV footage stored 72 hours. Instant staff alert if your dog needs attention.</div>
-          </div>
+        <div class="promise-glass">
+          <span class="promise-ico">🛡️</span>
+          <div><div class="promise-title">PawPark Safety Promise</div><div class="promise-body">Every bay sanitized between stays. CCTV stored 72 hrs. Instant staff alert if your dog needs attention.</div></div>
         </div>
       </div>
       <div style="height:90px;"></div>
     </div>
-    <div class="float-cta">
-      <button class="btn-cta" onclick="startBooking()">Book this station &nbsp;🐾</button>
-    </div>
+    <div class="float-cta"><button class="btn-cta" onclick="startBooking()">Book this station &nbsp;🐾</button></div>
   </div>
 
-  <!-- ░░ CCTV MODAL ░░ -->
-  <div id="cctvModal" class="modal-overlay hidden" onclick="hideCCTVModal()">
-    <div class="cctv-modal-card" onclick="event.stopPropagation()">
-      <div class="cctv-modal-header">
-        <div class="live-badge"><span class="live-dot"></span> LIVE FEED</div>
-        <button class="modal-close" onclick="hideCCTVModal()">✕</button>
-      </div>
-      <div class="cctv-modal-screen">
-        <div class="cctv-scanline"></div>
-        <div class="cctv-modal-dog">🐶</div>
-        <div class="cctv-corner tl"></div>
-        <div class="cctv-corner tr"></div>
-        <div class="cctv-corner bl"></div>
-        <div class="cctv-corner br"></div>
-        <div class="cctv-timestamp" id="cctvTime">00:00:00</div>
-      </div>
-      <div class="cctv-modal-note">Full CCTV access available after check-in. Stream secured with your booking QR.</div>
-    </div>
-  </div>
-
-  <!-- ░░ BOOK STEP 1 — Station ░░ -->
+  <!-- BOOK 1 -->
   <div id="screen-book1" class="screen">
-    <div class="sub-topbar">
-      <button class="back-btn" onclick="showScreen('screen-home')">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
-      <span class="sub-title">Choose station</span>
-      <span class="step-pill">1 / 6</span>
+    <div class="blob bh1"></div>
+    <div class="topbar glass-bar">
+      <button class="back-btn" onclick="showScreen('screen-home')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <span class="topbar-title">Choose station</span><span class="step-pill">1/6</span>
     </div>
     <div class="step-track"><div class="step-fill" style="width:16.6%"></div></div>
     <div class="screen-scroll pad-screen">
       <div class="book-heading">Which station?</div>
-      <div class="station-opt selected" id="bsOpt1" onclick="selectStation('SM North Edsa','bsOpt1')">
-        <span class="sopt-icon">🏪</span>
-        <div class="sopt-info"><div class="sopt-name">PawPark SM North</div><div class="sopt-meta">0.3 km · 4 slots</div></div>
-        <div class="sopt-check" id="bsChk1">✓</div>
-      </div>
-      <div class="station-opt" id="bsOpt2" onclick="selectStation('Trinoma','bsOpt2')">
-        <span class="sopt-icon">🏬</span>
-        <div class="sopt-info"><div class="sopt-name">PawPark Trinoma</div><div class="sopt-meta">0.7 km · 2 slots</div></div>
-        <div class="sopt-check" id="bsChk2">✓</div>
-      </div>
-      <div class="station-opt" id="bsOpt3" onclick="selectStation('Robinsons Galleria','bsOpt3')">
-        <span class="sopt-icon">🛍️</span>
-        <div class="sopt-info"><div class="sopt-name">PawPark Robinsons</div><div class="sopt-meta">1.2 km · 6 slots</div></div>
-        <div class="sopt-check" id="bsChk3">✓</div>
-      </div>
+      <div class="sopt-glass selected" id="bsOpt1" onclick="selectStation('SM North Edsa','bsOpt1')"><span class="sopt-ico">🏪</span><div class="sopt-info"><div class="sopt-name">PawPark SM North</div><div class="sopt-meta">0.3 km · 4 slots open</div></div><div class="sopt-check" id="bsChk1">✓</div></div>
+      <div class="sopt-glass" id="bsOpt2" onclick="selectStation('Trinoma','bsOpt2')"><span class="sopt-ico">🏬</span><div class="sopt-info"><div class="sopt-name">PawPark Trinoma</div><div class="sopt-meta">0.7 km · 2 slots open</div></div><div class="sopt-check" id="bsChk2">✓</div></div>
+      <div class="sopt-glass" id="bsOpt3" onclick="selectStation('Robinsons Galleria','bsOpt3')"><span class="sopt-ico">🛍️</span><div class="sopt-info"><div class="sopt-name">PawPark Robinsons</div><div class="sopt-meta">1.2 km · 6 slots open</div></div><div class="sopt-check" id="bsChk3">✓</div></div>
     </div>
     <div class="float-cta"><button class="btn-cta" onclick="goStep(2)">Next →</button></div>
   </div>
 
-  <!-- ░░ BOOK STEP 2 — Pet Details ░░ -->
+  <!-- BOOK 2 -->
   <div id="screen-book2" class="screen">
-    <div class="sub-topbar">
-      <button class="back-btn" onclick="goStep(1)">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
-      <span class="sub-title">Your pup</span>
-      <span class="step-pill">2 / 6</span>
+    <div class="blob bh2"></div>
+    <div class="topbar glass-bar">
+      <button class="back-btn" onclick="goStep(1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <span class="topbar-title">Your pup</span><span class="step-pill">2/6</span>
     </div>
     <div class="step-track"><div class="step-fill" style="width:33.3%"></div></div>
     <div class="screen-scroll pad-screen">
-      <div class="book-heading">Tell us about your pup</div>
+      <div class="book-heading">Tell us about your pup 🐶</div>
       <div class="field-lbl">Dog's name</div>
-      <input type="text" class="field-input" id="dogName" placeholder="e.g. Choco" />
+      <input type="text" class="field-glass" id="dogName" placeholder="e.g. Choco" />
       <div class="field-lbl">Size</div>
       <div class="size-row">
-        <div class="size-opt sel" id="szS" onclick="selectSize('S')">Small<span>≤7 kg</span></div>
-        <div class="size-opt" id="szM" onclick="selectSize('M')">Medium<span>7–20 kg</span></div>
-        <div class="size-opt" id="szL" onclick="selectSize('L')">Large<span>&gt;20 kg</span></div>
+        <div class="size-glass sel" id="szS" onclick="selectSize('S')">🐕 Small<span>≤7 kg</span></div>
+        <div class="size-glass" id="szM" onclick="selectSize('M')">🐕 Med<span>7–20 kg</span></div>
+        <div class="size-glass" id="szL" onclick="selectSize('L')">🐕 Large<span>&gt;20 kg</span></div>
       </div>
-      <div class="field-lbl">Notes <span class="opt-lbl">optional</span></div>
-      <textarea class="field-input field-ta" id="petNotes" placeholder="Anxious around strangers? Loves belly rubs? Let the staff know."></textarea>
-      <div class="field-lbl">Photo <span class="opt-lbl">optional</span></div>
-      <label class="photo-drop" for="petPhoto">
-        <span id="photoLabel">📷 &nbsp;Add a photo of your dog</span>
-        <input type="file" id="petPhoto" accept="image/*" style="display:none" onchange="handlePhoto(this)" />
-      </label>
+      <div class="field-lbl">Notes <span class="opt-tag">optional</span></div>
+      <textarea class="field-glass field-ta" id="petNotes" placeholder="Anxious around strangers? Loves belly rubs?"></textarea>
+      <div class="field-lbl">Photo <span class="opt-tag">optional</span></div>
+      <label class="photo-glass" for="petPhoto"><span id="photoLabel">📷 Add a photo of your dog</span><input type="file" id="petPhoto" accept="image/*" style="display:none" onchange="handlePhoto(this)" /></label>
     </div>
     <div class="float-cta"><button class="btn-cta" onclick="goStep(3)">Next →</button></div>
   </div>
 
-  <!-- ░░ BOOK STEP 3 — Duration ░░ -->
+  <!-- BOOK 3 -->
   <div id="screen-book3" class="screen">
-    <div class="sub-topbar">
-      <button class="back-btn" onclick="goStep(2)">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
-      <span class="sub-title">Duration</span>
-      <span class="step-pill">3 / 6</span>
+    <div class="blob bh1"></div>
+    <div class="topbar glass-bar">
+      <button class="back-btn" onclick="goStep(2)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <span class="topbar-title">Duration</span><span class="step-pill">3/6</span>
     </div>
     <div class="step-track"><div class="step-fill" style="width:50%"></div></div>
     <div class="screen-scroll pad-screen">
-      <div class="book-heading">How long?</div>
+      <div class="book-heading">How long? ⏱️</div>
       <div class="dur-grid">
-        <div class="dur-card sel" id="dur30" onclick="selectDur('30 mins',80,'dur30')">
-          <div class="dur-t">30 min</div><div class="dur-p">₱80</div>
-        </div>
-        <div class="dur-card" id="dur60" onclick="selectDur('1 hour',130,'dur60')">
-          <div class="dur-t">1 hour</div><div class="dur-p">₱130</div>
-        </div>
-        <div class="dur-card" id="dur120" onclick="selectDur('2 hours',220,'dur120')">
-          <div class="dur-t">2 hours</div><div class="dur-p">₱220</div>
-        </div>
-        <div class="dur-card" id="durCustom" onclick="selectDur('Custom',0,'durCustom')">
-          <div class="dur-t">Custom</div><div class="dur-p">varies</div>
-        </div>
+        <div class="dur-glass sel" id="dur30" onclick="selectDur('30 mins',80,30,'dur30')"><div class="dur-ico">⚡</div><div class="dur-t">30 min</div><div class="dur-p">₱80</div></div>
+        <div class="dur-glass" id="dur60" onclick="selectDur('1 hour',130,60,'dur60')"><div class="dur-ico">🕐</div><div class="dur-t">1 hour</div><div class="dur-p">₱130</div></div>
+        <div class="dur-glass" id="dur120" onclick="selectDur('2 hours',220,120,'dur120')"><div class="dur-ico">🕑</div><div class="dur-t">2 hours</div><div class="dur-p">₱220</div></div>
+        <div class="dur-glass" id="durCustom" onclick="selectDur('Custom',0,0,'durCustom')"><div class="dur-ico">✏️</div><div class="dur-t">Custom</div><div class="dur-p">varies</div></div>
       </div>
       <div id="customWrap" class="hidden">
         <div class="field-lbl">Minutes</div>
-        <input type="number" class="field-input" id="customMins" placeholder="e.g. 90" min="15" max="480" oninput="calcCustom(this.value)" />
+        <input type="number" class="field-glass" id="customMins" placeholder="e.g. 90" min="15" max="480" oninput="calcCustom(this.value)" />
       </div>
-      <div class="info-pill">⏰ Minimum 2-hour advance booking required</div>
+      <div class="info-glass">⏰ Minimum 2-hour advance booking required</div>
     </div>
     <div class="float-cta"><button class="btn-cta" onclick="goStep(4)">Next →</button></div>
   </div>
 
-  <!-- ░░ BOOK STEP 4 — Food ░░ -->
+  <!-- BOOK 4 -->
   <div id="screen-book4" class="screen">
-    <div class="sub-topbar">
-      <button class="back-btn" onclick="goStep(3)">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
-      <span class="sub-title">Food & treats</span>
-      <span class="step-pill">4 / 6</span>
+    <div class="blob bh2"></div>
+    <div class="topbar glass-bar">
+      <button class="back-btn" onclick="goStep(3)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <span class="topbar-title">Food &amp; treats</span><span class="step-pill">4/6</span>
     </div>
     <div class="step-track"><div class="step-fill" style="width:66.6%"></div></div>
     <div class="screen-scroll pad-screen">
-      <div class="book-heading">Feeding during stay</div>
-      <div class="food-opt sel" id="foodStation" onclick="selectFood('Station food (+₱50)',50,'foodStation')">
-        <span class="food-ico">🍖</span>
-        <div class="food-body"><div class="food-name">Station food</div><div class="food-meta">Dry kibble + fresh water · +₱50</div></div>
-        <div class="food-dot sel-dot" id="fdStation"></div>
-      </div>
-      <div class="food-opt" id="foodTreats" onclick="selectFood('Treats pack (+₱30)',30,'foodTreats')">
-        <span class="food-ico">🦴</span>
-        <div class="food-body"><div class="food-name">Treats pack</div><div class="food-meta">Assorted dog treats · +₱30</div></div>
-        <div class="food-dot" id="fdTreats"></div>
-      </div>
-      <div class="food-opt" id="foodOwn" onclick="selectFood('Own food (free)',0,'foodOwn')">
-        <span class="food-ico">🥣</span>
-        <div class="food-body"><div class="food-name">Bring own food</div><div class="food-meta">Staff feeds per your instructions</div></div>
-        <div class="food-dot" id="fdOwn"></div>
-      </div>
-      <div class="food-opt" id="foodNone" onclick="selectFood('No food needed',0,'foodNone')">
-        <span class="food-ico">💧</span>
-        <div class="food-body"><div class="food-name">Water only</div><div class="food-meta">Fresh water provided always</div></div>
-        <div class="food-dot" id="fdNone"></div>
-      </div>
-      <div class="field-lbl" style="margin-top:16px;">Dietary notes <span class="opt-lbl">optional</span></div>
-      <input type="text" class="field-input" id="dietaryNotes" placeholder="e.g. grain-free only, no chicken…" />
+      <div class="book-heading">Feeding during stay 🍖</div>
+      <div class="food-glass sel" id="foodStation" onclick="selectFood('Station food (+₱50)',50,'foodStation')"><span class="food-ico">🍖</span><div class="food-body"><div class="food-name">Station food</div><div class="food-meta">Dry kibble + fresh water · +₱50</div></div><div class="food-dot sel-dot" id="fdStation"></div></div>
+      <div class="food-glass" id="foodTreats" onclick="selectFood('Treats pack (+₱30)',30,'foodTreats')"><span class="food-ico">🦴</span><div class="food-body"><div class="food-name">Treats pack</div><div class="food-meta">Assorted dog treats · +₱30</div></div><div class="food-dot" id="fdTreats"></div></div>
+      <div class="food-glass" id="foodOwn" onclick="selectFood('Own food',0,'foodOwn')"><span class="food-ico">🥣</span><div class="food-body"><div class="food-name">Bring own food</div><div class="food-meta">Staff feeds per your instructions</div></div><div class="food-dot" id="fdOwn"></div></div>
+      <div class="food-glass" id="foodNone" onclick="selectFood('Water only',0,'foodNone')"><span class="food-ico">💧</span><div class="food-body"><div class="food-name">Water only</div><div class="food-meta">Fresh water always provided</div></div><div class="food-dot" id="fdNone"></div></div>
+      <div class="field-lbl" style="margin-top:16px;">Dietary notes <span class="opt-tag">optional</span></div>
+      <input type="text" class="field-glass" id="dietaryNotes" placeholder="e.g. grain-free only, no chicken…" />
     </div>
     <div class="float-cta"><button class="btn-cta" onclick="goStep(5)">Next →</button></div>
   </div>
 
-  <!-- ░░ BOOK STEP 5 — Schedule ░░ -->
+  <!-- BOOK 5 -->
   <div id="screen-book5" class="screen">
-    <div class="sub-topbar">
-      <button class="back-btn" onclick="goStep(4)">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
-      <span class="sub-title">Schedule</span>
-      <span class="step-pill">5 / 6</span>
+    <div class="blob bh1"></div>
+    <div class="topbar glass-bar">
+      <button class="back-btn" onclick="goStep(4)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <span class="topbar-title">Schedule</span><span class="step-pill">5/6</span>
     </div>
     <div class="step-track"><div class="step-fill" style="width:83.3%"></div></div>
     <div class="screen-scroll pad-screen">
-      <div class="book-heading">When do you arrive?</div>
+      <div class="book-heading">When do you arrive? 📅</div>
       <div class="field-lbl">Drop-off date</div>
-      <input type="date" class="field-input" id="dropDate" />
+      <input type="date" class="field-glass" id="dropDate" />
       <div class="field-lbl">Drop-off time</div>
-      <input type="time" class="field-input" id="dropTime" />
+      <input type="time" class="field-glass" id="dropTime" />
       <div class="field-lbl">Estimated pick-up</div>
-      <input type="time" class="field-input" id="pickTime" />
-      <div class="info-pill">⚠️ Book at least 2 hours before drop-off</div>
-      <div class="info-pill warn-pill">📲 You'll get a notification 30 mins before drop-off</div>
+      <input type="time" class="field-glass" id="pickTime" />
+      <div class="info-glass">⚠️ Book at least 2 hours before drop-off</div>
+      <div class="info-glass warn-glass">📲 Reminder sent 30 mins before drop-off</div>
     </div>
     <div class="float-cta"><button class="btn-cta" onclick="goStep(6)">Review booking →</button></div>
   </div>
 
-  <!-- ░░ BOOK STEP 6 — Summary ░░ -->
+  <!-- BOOK 6 -->
   <div id="screen-book6" class="screen">
-    <div class="sub-topbar">
-      <button class="back-btn" onclick="goStep(5)">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
-      <span class="sub-title">Review & pay</span>
-      <span class="step-pill">6 / 6</span>
+    <div class="blob bh2"></div>
+    <div class="topbar glass-bar">
+      <button class="back-btn" onclick="goStep(5)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <span class="topbar-title">Review &amp; pay</span><span class="step-pill">6/6</span>
     </div>
     <div class="step-track"><div class="step-fill" style="width:100%"></div></div>
     <div class="screen-scroll pad-screen">
-      <div class="book-heading">Almost there!</div>
-      <div class="summary-bubble">
-        <div class="sum-row"><span class="sum-k">Station</span><span class="sum-v" id="sumStation">—</span></div>
-        <div class="sum-row"><span class="sum-k">Pet</span><span class="sum-v" id="sumPet">—</span></div>
-        <div class="sum-row"><span class="sum-k">Duration</span><span class="sum-v" id="sumDur">—</span></div>
-        <div class="sum-row"><span class="sum-k">Food</span><span class="sum-v" id="sumFood">—</span></div>
-        <div class="sum-row"><span class="sum-k">Schedule</span><span class="sum-v" id="sumSchedule">—</span></div>
+      <div class="book-heading">Almost there! 🎉</div>
+      <div class="summary-glass">
+        <div class="sum-row"><span class="sum-k">📍 Station</span><span class="sum-v" id="sumStation">—</span></div>
+        <div class="sum-row"><span class="sum-k">🐶 Pet</span><span class="sum-v" id="sumPet">—</span></div>
+        <div class="sum-row"><span class="sum-k">⏱️ Duration</span><span class="sum-v" id="sumDur">—</span></div>
+        <div class="sum-row"><span class="sum-k">🍖 Food</span><span class="sum-v" id="sumFood">—</span></div>
+        <div class="sum-row"><span class="sum-k">📅 Schedule</span><span class="sum-v" id="sumSchedule">—</span></div>
         <div class="sum-divider"></div>
-        <div class="sum-row total-row">
-          <span class="sum-k total-k">Total</span>
-          <span class="sum-v total-v" id="sumTotal">₱0</span>
-        </div>
+        <div class="sum-row"><span class="sum-k total-k">💰 Total</span><span class="sum-v total-v" id="sumTotal">₱0</span></div>
       </div>
-
-      <div class="field-lbl">Payment</div>
+      <div class="field-lbl">Payment method</div>
       <div class="pay-row">
-        <div class="pay-opt sel" id="payGcash" onclick="selectPay('payGcash')">💸 GCash</div>
-        <div class="pay-opt" id="payMaya" onclick="selectPay('payMaya')">💳 Maya</div>
-        <div class="pay-opt" id="payCash" onclick="selectPay('payCash')">💵 Cash</div>
+        <div class="pay-glass sel" id="payGcash" onclick="selectPay('payGcash')">💸 GCash</div>
+        <div class="pay-glass" id="payMaya" onclick="selectPay('payMaya')">💳 Maya</div>
+        <div class="pay-glass" id="payCash" onclick="selectPay('payCash')">💵 Cash</div>
       </div>
-
-      <div class="safety-promise" style="margin-top:16px;">
-        <div class="sp-icon">📹</div>
-        <div class="sp-text">
-          <div class="sp-title">CCTV unlocks after check-in</div>
-          <div class="sp-body">Once staff scans your QR at drop-off, live feed becomes available under My Bookings.</div>
-        </div>
+      <div class="promise-glass" style="margin-top:16px;">
+        <span class="promise-ico">🔒</span>
+        <div><div class="promise-title">CCTV unlocks after check-in</div><div class="promise-body">Once staff scans your QR, live feed unlocks in My Bookings.</div></div>
       </div>
     </div>
     <div class="float-cta"><button class="btn-cta" onclick="confirmBooking()">Confirm &amp; pay 🐾</button></div>
   </div>
 
-  <!-- ░░ CONFIRMATION ░░ -->
-  <div id="screen-confirm" class="screen">
-    <div class="blob blob-confirm-1"></div>
-    <div class="blob blob-confirm-2"></div>
+  <!-- CONFIRMATION -->
+  <div id="screen-confirm" class="screen screen-confirm-bg">
+    <div class="blob bc1"></div><div class="blob bc2"></div><div class="blob bc3"></div>
     <div class="screen-scroll">
       <div class="confirm-wrap">
-        <div class="confirm-paw" id="confirmPaw">🐾</div>
+        <div class="confirm-ring"><span class="confirm-paw" id="confirmPaw">🐾</span></div>
         <div class="confirm-title">You're all set!</div>
         <div class="confirm-sub">Your pup has a spot waiting.</div>
-
-        <div class="qr-bubble">
-          <div class="qr-eyebrow">Drop-off QR code</div>
+        <div class="qr-glass">
+          <div class="qr-label">Drop-off QR code</div>
           <div class="qr-frame">
             <svg width="110" height="110" viewBox="0 0 100 100">
-              <rect x="5" y="5" width="35" height="35" fill="none" stroke="#F0615A" stroke-width="3" rx="3"/>
-              <rect x="15" y="15" width="15" height="15" fill="#F0615A" rx="1"/>
-              <rect x="60" y="5" width="35" height="35" fill="none" stroke="#F0615A" stroke-width="3" rx="3"/>
-              <rect x="70" y="15" width="15" height="15" fill="#F0615A" rx="1"/>
-              <rect x="5" y="60" width="35" height="35" fill="none" stroke="#F0615A" stroke-width="3" rx="3"/>
-              <rect x="15" y="70" width="15" height="15" fill="#F0615A" rx="1"/>
-              <rect x="55" y="55" width="7" height="7" fill="#F0615A"/>
-              <rect x="68" y="55" width="7" height="7" fill="#F0615A"/>
-              <rect x="81" y="55" width="7" height="7" fill="#F0615A"/>
-              <rect x="55" y="68" width="7" height="7" fill="#F0615A"/>
-              <rect x="55" y="81" width="7" height="7" fill="#F0615A"/>
-              <rect x="68" y="74" width="7" height="7" fill="#F0615A"/>
-              <rect x="81" y="68" width="7" height="7" fill="#F0615A"/>
-              <rect x="81" y="81" width="7" height="7" fill="#F0615A"/>
+              <rect x="5" y="5" width="35" height="35" fill="none" stroke="#F0615A" stroke-width="3" rx="3"/><rect x="15" y="15" width="15" height="15" fill="#F0615A" rx="1"/>
+              <rect x="60" y="5" width="35" height="35" fill="none" stroke="#F0615A" stroke-width="3" rx="3"/><rect x="70" y="15" width="15" height="15" fill="#F0615A" rx="1"/>
+              <rect x="5" y="60" width="35" height="35" fill="none" stroke="#F0615A" stroke-width="3" rx="3"/><rect x="15" y="70" width="15" height="15" fill="#F0615A" rx="1"/>
+              <rect x="55" y="55" width="7" height="7" fill="#F0615A"/><rect x="68" y="55" width="7" height="7" fill="#F0615A"/>
+              <rect x="81" y="55" width="7" height="7" fill="#F0615A"/><rect x="55" y="68" width="7" height="7" fill="#F0615A"/>
+              <rect x="55" y="81" width="7" height="7" fill="#F0615A"/><rect x="68" y="74" width="7" height="7" fill="#F0615A"/>
+              <rect x="81" y="68" width="7" height="7" fill="#F0615A"/><rect x="81" y="81" width="7" height="7" fill="#F0615A"/>
             </svg>
           </div>
-          <div class="qr-code-id" id="bookingId">#PP-00000</div>
+          <div class="qr-id" id="bookingId">#PP-00000</div>
         </div>
-
-        <div class="steps-list">
+        <div class="steps-glass">
           <div class="step-item"><span class="step-num">1</span>Arrive at the station with your dog</div>
           <div class="step-item"><span class="step-num">2</span>Show this QR at the front desk</div>
           <div class="step-item"><span class="step-num">3</span>Staff checks you in — you're free to go</div>
           <div class="step-item"><span class="step-num">4</span>Go to My Bookings to watch CCTV live</div>
         </div>
-
-        <button class="btn-cta full-btn" onclick="showScreen('screen-home')" style="margin-top:24px;">Back to home</button>
+        <button class="btn-cta" style="width:100%;margin-top:24px;" onclick="showScreen('screen-home')">Back to home 🏠</button>
       </div>
     </div>
   </div>
 
-  <!-- ░░ MY BOOKINGS ░░ -->
+  <!-- MY BOOKINGS -->
   <div id="screen-bookings" class="screen">
-    <div class="sub-topbar">
-      <button class="back-btn" onclick="showScreen('screen-home')">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
-      <span class="sub-title">My bookings</span>
+    <div class="blob bh1"></div>
+    <div class="topbar glass-bar">
+      <button class="back-btn" onclick="showScreen('screen-home')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <span class="topbar-title">My bookings</span>
       <span style="width:36px;"></span>
     </div>
     <div class="screen-scroll pad-screen">
       <div id="bookingsList"></div>
       <div id="noBookings" class="empty-wrap">
-        <div class="empty-paw">🐾</div>
+        <div class="empty-ico">🐾</div>
         <div class="empty-msg">No bookings yet.<br>Your pup is waiting!</div>
         <button class="btn-cta" style="margin-top:20px;" onclick="startBooking()">Book a spot</button>
       </div>
     </div>
   </div>
 
-  <!-- ░░ ACTIVE BOOKING ░░ -->
+  <!-- ACTIVE BOOKING -->
   <div id="screen-active" class="screen">
-    <div class="blob blob-home-1"></div>
-    <div class="sub-topbar">
-      <button class="back-btn" onclick="showScreen('screen-bookings')">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
-      <span class="sub-title" id="activeTitle">Active stay</span>
-      <div class="live-badge" style="margin-right:4px;"><span class="live-dot"></span> LIVE</div>
+    <div class="blob bh1"></div><div class="blob bh2"></div>
+    <div class="topbar glass-bar">
+      <button class="back-btn" onclick="showScreen('screen-bookings')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <span class="topbar-title" id="activeTitle">Active stay</span>
+      <div class="live-badge"><span class="live-dot"></span>LIVE</div>
     </div>
-
     <div class="screen-scroll pad-screen">
-
-      <!-- overtime banner -->
       <div id="overtimeBanner" class="overtime-banner hidden">
-        <span class="ot-icon">⚠️</span>
-        <div class="ot-text">
-          <div class="ot-title">Overtime</div>
-          <div class="ot-sub" id="otSubText">₱80 charged · next in 30:00</div>
-        </div>
+        <span class="ot-ico">⚠️</span>
+        <div class="ot-text"><div class="ot-title">Overtime</div><div class="ot-sub" id="otSubText">₱80 charged · next in 30:00</div></div>
         <div class="ot-total" id="otTotal">+₱80</div>
       </div>
-
-      <!-- timer bubble -->
-      <div class="timer-bubble">
+      <div class="timer-glass">
         <div class="timer-label" id="timerLabel">Time remaining</div>
         <div class="timer-display" id="timerDisplay">--:--</div>
         <div class="timer-sub" id="timerSub">Calculating…</div>
-        <div class="timer-bar-track">
-          <div class="timer-bar-fill" id="timerBarFill" style="width:100%"></div>
-        </div>
+        <div class="timer-track"><div class="timer-fill" id="timerBarFill" style="width:100%"></div></div>
       </div>
-
-      <!-- CCTV — unlocked here only -->
-      <div class="active-section-label">Live camera</div>
-      <div class="cctv-card" onclick="showCCTVModal()">
+      <div class="active-sec-label">📹 Live camera</div>
+      <div class="cctv-glass" onclick="showCCTVModal()">
         <div class="cctv-left">
-          <div class="live-badge"><span class="live-dot"></span> LIVE</div>
-          <div class="cctv-label" id="cctvPetName">Watching your pup</div>
+          <div class="live-badge"><span class="live-dot"></span>LIVE</div>
+          <div class="cctv-title" id="cctvPetName">Watching your pup</div>
           <div class="cctv-sub">Tap to open full-screen feed</div>
         </div>
-        <div class="cctv-preview">
-          <div class="cctv-screen">
-            <div class="cctv-scanline"></div>
-            <div class="cctv-dog-icon">🐶</div>
-            <div class="cctv-tap">Tap</div>
-          </div>
+        <div class="cctv-thumb">
+          <div class="cctv-scanline"></div>
+          <span class="cctv-dog">🐶</span>
+          <span class="cctv-tap-hint">Tap</span>
         </div>
       </div>
-
-      <!-- feeding schedule -->
-      <div class="active-section-label">Feeding &amp; water schedule</div>
+      <div class="active-sec-label">🍽️ Feeding &amp; water schedule</div>
       <div id="feedingSchedule" class="feeding-list"></div>
-
-      <!-- snack CTA -->
-      <div class="snack-cta-card" onclick="showSnackModal()">
-        <div class="snack-cta-left">
-          <div class="snack-cta-title">🦴 Treat time?</div>
-          <div class="snack-cta-sub">Order a snack for your pup right now</div>
-        </div>
-        <div class="snack-cta-arrow">›</div>
+      <div class="snack-glass" onclick="showSnackModal()">
+        <div class="snack-glass-left"><div class="snack-glass-title">🦴 Treat time?</div><div class="snack-glass-sub">Order a snack for your pup right now</div></div>
+        <div class="snack-glass-arrow">›</div>
       </div>
-
       <div style="height:80px;"></div>
     </div>
   </div>
 
-  <!-- ░░ SNACK MODAL ░░ -->
+  <!-- SNACK MODAL -->
   <div id="snackModal" class="modal-overlay hidden" onclick="hideSnackModal()">
-    <div class="snack-modal-card" onclick="event.stopPropagation()">
-      <div class="snack-modal-header">
-        <div class="snack-modal-title">🦴 Order a snack</div>
-        <button class="modal-close" onclick="hideSnackModal()">✕</button>
-      </div>
-      <div class="snack-modal-sub">Delivered to your pup's bay in minutes</div>
-      <div class="snack-item">
-        <div class="snack-icon">🦴</div>
-        <div class="snack-info"><div class="snack-name">Milk-bone treat pack</div><div class="snack-meta">6 pcs · low sugar</div></div>
-        <div class="snack-price">₱45</div>
-        <button class="snack-add-btn" onclick="addSnack(0,45)">+</button>
-      </div>
-      <div class="snack-item">
-        <div class="snack-icon">🥩</div>
-        <div class="snack-info"><div class="snack-name">Chicken jerky strips</div><div class="snack-meta">3 pcs · high protein</div></div>
-        <div class="snack-price">₱65</div>
-        <button class="snack-add-btn" onclick="addSnack(1,65)">+</button>
-      </div>
-      <div class="snack-item">
-        <div class="snack-icon">🧀</div>
-        <div class="snack-info"><div class="snack-name">Cheese bites</div><div class="snack-meta">Bite-sized · calcium rich</div></div>
-        <div class="snack-price">₱55</div>
-        <button class="snack-add-btn" onclick="addSnack(2,55)">+</button>
-      </div>
-      <div class="snack-item">
-        <div class="snack-icon">🍠</div>
-        <div class="snack-info"><div class="snack-name">Sweet potato chews</div><div class="snack-meta">Grain-free · digestive friendly</div></div>
-        <div class="snack-price">₱50</div>
-        <button class="snack-add-btn" onclick="addSnack(3,50)">+</button>
-      </div>
-      <div id="snackCartRow" class="snack-cart-row hidden">
-        <div class="snack-cart-label" id="snackCartLabel">0 items · ₱0</div>
+    <div class="snack-sheet" onclick="event.stopPropagation()">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header"><div class="sheet-title">🦴 Order a snack</div><button class="modal-close" onclick="hideSnackModal()">✕</button></div>
+      <div class="sheet-sub">Delivered to your pup's bay in minutes</div>
+      <div class="snack-row"><span class="snack-ico">🦴</span><div class="snack-info"><div class="snack-name">Milk-bone treat pack</div><div class="snack-meta">6 pcs · low sugar</div></div><span class="snack-price">₱45</span><button class="snack-add" onclick="addSnack(0,45)">+</button></div>
+      <div class="snack-row"><span class="snack-ico">🥩</span><div class="snack-info"><div class="snack-name">Chicken jerky strips</div><div class="snack-meta">3 pcs · high protein</div></div><span class="snack-price">₱65</span><button class="snack-add" onclick="addSnack(1,65)">+</button></div>
+      <div class="snack-row"><span class="snack-ico">🧀</span><div class="snack-info"><div class="snack-name">Cheese bites</div><div class="snack-meta">Bite-sized · calcium rich</div></div><span class="snack-price">₱55</span><button class="snack-add" onclick="addSnack(2,55)">+</button></div>
+      <div class="snack-row"><span class="snack-ico">🍠</span><div class="snack-info"><div class="snack-name">Sweet potato chews</div><div class="snack-meta">Grain-free · digestive</div></div><span class="snack-price">₱50</span><button class="snack-add" onclick="addSnack(3,50)">+</button></div>
+      <div id="snackCartRow" class="snack-cart hidden">
+        <span class="snack-cart-lbl" id="snackCartLabel">0 items · ₱0</span>
         <button class="snack-order-btn" onclick="confirmSnackOrder()">Order now 🐾</button>
       </div>
     </div>
   </div>
 
-  <!-- ░░ CCTV MODAL ░░ -->
+  <!-- CCTV MODAL -->
   <div id="cctvModal" class="modal-overlay hidden" onclick="hideCCTVModal()">
-    <div class="cctv-modal-card" onclick="event.stopPropagation()">
-      <div class="cctv-modal-header">
-        <div class="live-badge"><span class="live-dot"></span> LIVE FEED</div>
-        <button class="modal-close" onclick="hideCCTVModal()">✕</button>
-      </div>
+    <div class="cctv-modal" onclick="event.stopPropagation()">
+      <div class="cctv-modal-hdr"><div class="live-badge"><span class="live-dot"></span>LIVE FEED</div><button class="modal-close" onclick="hideCCTVModal()">✕</button></div>
       <div class="cctv-modal-screen">
         <div class="cctv-scanline"></div>
-        <div class="cctv-modal-dog">🐶</div>
-        <div class="cctv-corner tl"></div>
-        <div class="cctv-corner tr"></div>
-        <div class="cctv-corner bl"></div>
-        <div class="cctv-corner br"></div>
-        <div class="cctv-timestamp" id="cctvTime">00:00:00</div>
+        <span class="cctv-modal-dog">🐶</span>
+        <div class="cctv-corner tl"></div><div class="cctv-corner tr"></div>
+        <div class="cctv-corner bl"></div><div class="cctv-corner br"></div>
+        <div class="cctv-ts" id="cctvTime">00:00:00</div>
       </div>
       <div class="cctv-modal-note">Secured with your booking QR · footage stored 72 hrs</div>
     </div>
   </div>
 
-</div><!-- #app -->
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="pawpark.js"></script>
 </body>
 </html>
