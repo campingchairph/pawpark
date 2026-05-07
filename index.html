@@ -2,445 +2,544 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>PawPark</title>
   <link rel="stylesheet" href="pawpark.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
 </head>
 <body>
+<div id="app">
 
-  <div id="app">
+  <!-- ░░ SPLASH ░░ -->
+  <div id="screen-splash" class="screen active">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="splash-content">
+      <div class="splash-paw-anim">🐾</div>
+      <div class="splash-wordmark">PawPark</div>
+      <div class="splash-sub">safe stays · near malls · supervised</div>
+      <div class="splash-track"><div class="splash-fill"></div></div>
+    </div>
+  </div>
 
-    <!-- SCREEN 1: SPLASH -->
-    <div id="screen-splash" class="screen active">
-      <div class="splash-inner">
-        <div class="splash-dog" id="splashDog">🐾</div>
-        <div class="splash-logo">PawPark</div>
-        <div class="splash-tagline">safe stays near you</div>
-        <div class="splash-paws">
-          <span>🐾</span><span>🐾</span><span>🐾</span>
-        </div>
-        <div class="splash-loader"><div class="loader-bar"></div></div>
+  <!-- ░░ HOME ░░ -->
+  <div id="screen-home" class="screen">
+    <div class="blob blob-home-1"></div>
+    <div class="blob blob-home-2"></div>
+
+    <div class="home-topbar">
+      <div class="home-logo">🐾 PawPark</div>
+      <div class="home-topbar-actions">
+        <button class="top-icon-btn" onclick="showScreen('screen-bookings')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </button>
+        <button class="top-icon-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </button>
       </div>
     </div>
 
-    <!-- SCREEN 2: HOME -->
-    <div id="screen-home" class="screen">
-      <div class="topbar">
-        <div class="topbar-left">
-          <span class="topbar-logo">🐾 PawPark</span>
+    <div class="home-scroll">
+      <div class="hero-bubble">
+        <div class="hero-text-wrap">
+          <div class="hero-eyebrow">📍 Metro Manila</div>
+          <div class="hero-title">A safe spot<br>for your pup</div>
+          <div class="hero-chips">
+            <span class="hero-chip">👁 CCTV live</span>
+            <span class="hero-chip">👩‍⚕️ Staffed</span>
+            <span class="hero-chip">❄️ A/C</span>
+          </div>
         </div>
-        <div class="topbar-right">
-          <button class="icon-btn" onclick="showScreen('screen-bookings')">📋</button>
-          <button class="icon-btn">👤</button>
+        <div class="hero-dog-wrap">
+          <div class="hero-dog">🐶</div>
         </div>
       </div>
-      <div class="home-hero">
-        <div class="hero-text">
-          <div class="hero-title">Find a safe spot<br>for your pup</div>
-          <div class="hero-sub">Supervised · Short-stay · Near you</div>
+
+      <!-- Trust bar -->
+      <div class="trust-strip">
+        <div class="trust-item">
+          <span class="trust-icon">📹</span>
+          <span>CCTV access<br>via app</span>
         </div>
-        <div class="hero-dog">🐶</div>
+        <div class="trust-div"></div>
+        <div class="trust-item">
+          <span class="trust-icon">🔒</span>
+          <span>Secure<br>QR check-in</span>
+        </div>
+        <div class="trust-div"></div>
+        <div class="trust-item">
+          <span class="trust-icon">⭐</span>
+          <span>Trained<br>pet staff</span>
+        </div>
       </div>
-      <div class="section-bar">
-        <span class="section-title">Stations near you</span>
-        <button class="map-toggle" id="mapToggleBtn" onclick="toggleMapView()">🗺 Map</button>
+
+      <!-- Stations -->
+      <div class="section-row">
+        <div class="section-heading">Stations near you</div>
+        <button class="pill-toggle" id="mapToggleBtn" onclick="toggleMapView()">🗺 Map</button>
       </div>
-      <div id="listView" class="station-list">
+
+      <div id="listView">
         <div class="station-card" onclick="showStationDetail('SM North Edsa')">
-          <div class="station-thumb">🏪</div>
-          <div class="station-info">
-            <div class="station-name">PawPark SM North</div>
-            <div class="station-meta">0.3 km · 8am–10pm</div>
-            <div class="station-tags">
-              <span class="tag tag-green">4 slots</span>
-              <span class="tag tag-blue">CCTV</span>
-              <span class="tag tag-blue">A/C</span>
+          <div class="sc-left">
+            <div class="sc-icon-wrap"><span class="sc-icon">🏪</span></div>
+          </div>
+          <div class="sc-body">
+            <div class="sc-name">PawPark SM North</div>
+            <div class="sc-meta">0.3 km away · 8am – 10pm</div>
+            <div class="sc-tags">
+              <span class="stag green">4 slots open</span>
+              <span class="stag blue">CCTV</span>
+              <span class="stag blue">A/C</span>
             </div>
           </div>
-          <div class="station-arrow">›</div>
+          <div class="sc-arrow">›</div>
         </div>
+
         <div class="station-card" onclick="showStationDetail('Trinoma')">
-          <div class="station-thumb">🏬</div>
-          <div class="station-info">
-            <div class="station-name">PawPark Trinoma</div>
-            <div class="station-meta">0.7 km · 9am–9pm</div>
-            <div class="station-tags">
-              <span class="tag tag-amber">2 slots</span>
-              <span class="tag tag-blue">CCTV</span>
+          <div class="sc-left">
+            <div class="sc-icon-wrap"><span class="sc-icon">🏬</span></div>
+          </div>
+          <div class="sc-body">
+            <div class="sc-name">PawPark Trinoma</div>
+            <div class="sc-meta">0.7 km away · 9am – 9pm</div>
+            <div class="sc-tags">
+              <span class="stag amber">2 slots open</span>
+              <span class="stag blue">CCTV</span>
             </div>
           </div>
-          <div class="station-arrow">›</div>
+          <div class="sc-arrow">›</div>
         </div>
+
         <div class="station-card" onclick="showStationDetail('Robinsons Galleria')">
-          <div class="station-thumb">🛍️</div>
-          <div class="station-info">
-            <div class="station-name">PawPark Robinsons</div>
-            <div class="station-meta">1.2 km · 10am–9pm</div>
-            <div class="station-tags">
-              <span class="tag tag-green">6 slots</span>
-              <span class="tag tag-blue">Staff</span>
-              <span class="tag tag-blue">A/C</span>
+          <div class="sc-left">
+            <div class="sc-icon-wrap"><span class="sc-icon">🛍️</span></div>
+          </div>
+          <div class="sc-body">
+            <div class="sc-name">PawPark Robinsons</div>
+            <div class="sc-meta">1.2 km away · 10am – 9pm</div>
+            <div class="sc-tags">
+              <span class="stag green">6 slots open</span>
+              <span class="stag blue">Staff</span>
+              <span class="stag blue">A/C</span>
             </div>
           </div>
-          <div class="station-arrow">›</div>
+          <div class="sc-arrow">›</div>
         </div>
       </div>
-      <div id="mapView" class="map-view hidden">
-        <div class="map-mock">
-          <div class="map-bg-label">📍 Map view</div>
-          <div class="map-pin" style="top:30%;left:38%;" onclick="showStationDetail('SM North Edsa')">
-            <div class="pin-dot orange"></div>
-            <div class="pin-label">SM North<br><span>4 slots</span></div>
+
+      <div id="mapView" class="hidden">
+        <div class="map-bubble">
+          <div class="map-placeholder-text">📍 Interactive map</div>
+          <div class="map-pin" style="top:28%;left:36%;" onclick="showStationDetail('SM North Edsa')">
+            <div class="mpin orange"></div>
+            <div class="mpin-label">SM North <span>4</span></div>
           </div>
-          <div class="map-pin" style="top:52%;left:60%;" onclick="showStationDetail('Trinoma')">
-            <div class="pin-dot amber"></div>
-            <div class="pin-label">Trinoma<br><span>2 slots</span></div>
+          <div class="map-pin" style="top:50%;left:58%;" onclick="showStationDetail('Trinoma')">
+            <div class="mpin amber"></div>
+            <div class="mpin-label">Trinoma <span>2</span></div>
           </div>
-          <div class="map-pin" style="top:68%;left:25%;" onclick="showStationDetail('Robinsons Galleria')">
-            <div class="pin-dot orange"></div>
-            <div class="pin-label">Robinsons<br><span>6 slots</span></div>
+          <div class="map-pin" style="top:66%;left:22%;" onclick="showStationDetail('Robinsons Galleria')">
+            <div class="mpin orange"></div>
+            <div class="mpin-label">Robinsons <span>6</span></div>
           </div>
         </div>
       </div>
-      <div class="home-cta-wrap">
-        <button class="btn-primary full" onclick="startBooking()">Book a spot 🐾</button>
-      </div>
+
+      <div style="height: 90px;"></div>
     </div>
 
-    <!-- SCREEN 3: STATION DETAIL -->
-    <div id="screen-station" class="screen">
-      <div class="topbar">
-        <button class="back-btn" onclick="showScreen('screen-home')">‹ Back</button>
-        <span class="topbar-center" id="stationTitle">Station</span>
-        <span></span>
+    <div class="float-cta">
+      <button class="btn-cta" onclick="startBooking()">Book a spot &nbsp;🐾</button>
+    </div>
+  </div>
+
+  <!-- ░░ STATION DETAIL ░░ -->
+  <div id="screen-station" class="screen">
+    <div class="blob blob-detail-1"></div>
+    <div class="sub-topbar">
+      <button class="back-btn" onclick="showScreen('screen-home')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <span class="sub-title" id="stationTitle">Station</span>
+      <span style="width:36px;"></span>
+    </div>
+
+    <div class="screen-scroll">
+      <div class="detail-hero">
+        <div class="detail-hero-icon" id="detailIcon">🏪</div>
+        <div class="detail-slot-badge" id="stationSlots">4 slots open</div>
       </div>
-      <div class="station-photo-hero">
-        <div class="station-photo-icon">🏪</div>
-        <div class="station-photo-overlay">
-          <span class="tag tag-green" id="stationSlots">4 slots open</span>
-        </div>
-      </div>
+
       <div class="detail-body">
         <div class="detail-name" id="stationDetailName">PawPark SM North</div>
-        <div class="detail-meta">G/F near east parking · 8am–10pm</div>
-        <div class="detail-section-label">Amenities</div>
-        <div class="amenity-row">
-          <div class="amenity-chip">💧 Water</div>
-          <div class="amenity-chip">❄️ Cooling</div>
-          <div class="amenity-chip">📹 CCTV</div>
-          <div class="amenity-chip">👩‍⚕️ Staff</div>
-          <div class="amenity-chip">🧴 Grooming kit</div>
+        <div class="detail-location">G/F near east parking · 8am – 10pm</div>
+
+        <!-- CCTV Live Feed Card -->
+        <div class="cctv-card">
+          <div class="cctv-left">
+            <div class="live-badge"><span class="live-dot"></span> LIVE</div>
+            <div class="cctv-label">Watch your dog anytime</div>
+            <div class="cctv-sub">Stream CCTV directly from the app after check-in</div>
+          </div>
+          <div class="cctv-preview" onclick="showCCTVModal()">
+            <div class="cctv-screen">
+              <div class="cctv-scanline"></div>
+              <div class="cctv-dog-icon">🐶</div>
+              <div class="cctv-tap">Tap to preview</div>
+            </div>
+          </div>
         </div>
-        <div class="detail-section-label">Safety notes</div>
-        <div class="safety-note">All stations are staffed during operating hours. CCTV footage available on request. Each bay is cleaned between stays.</div>
-        <div class="detail-section-label">Rates</div>
-        <div class="rate-row">
-          <div class="rate-card"><div class="rate-time">30 min</div><div class="rate-price">₱80</div></div>
-          <div class="rate-card"><div class="rate-time">1 hour</div><div class="rate-price">₱130</div></div>
-          <div class="rate-card"><div class="rate-time">2 hours</div><div class="rate-price">₱220</div></div>
+
+        <div class="detail-sec-label">Amenities</div>
+        <div class="amenity-wrap">
+          <div class="amenity-pill">💧 Fresh water</div>
+          <div class="amenity-pill">❄️ A/C cooling</div>
+          <div class="amenity-pill">📹 24/7 CCTV</div>
+          <div class="amenity-pill">👩‍⚕️ Trained staff</div>
+          <div class="amenity-pill">🧴 Grooming kit</div>
+          <div class="amenity-pill">🛏 Comfy bay</div>
+        </div>
+
+        <!-- Staff trust card -->
+        <div class="staff-card">
+          <div class="staff-avatar">👩‍⚕️</div>
+          <div class="staff-info">
+            <div class="staff-name">Station Staff on duty</div>
+            <div class="staff-meta">Pet first-aid certified · 3 yrs experience</div>
+          </div>
+          <div class="staff-badge">✓ Verified</div>
+        </div>
+
+        <div class="detail-sec-label">Rates</div>
+        <div class="rates-row">
+          <div class="rate-bubble">
+            <div class="rate-dur">30 min</div>
+            <div class="rate-amt">₱80</div>
+          </div>
+          <div class="rate-bubble">
+            <div class="rate-dur">1 hour</div>
+            <div class="rate-amt">₱130</div>
+          </div>
+          <div class="rate-bubble">
+            <div class="rate-dur">2 hours</div>
+            <div class="rate-amt">₱220</div>
+          </div>
+        </div>
+
+        <div class="safety-promise">
+          <div class="sp-icon">🛡️</div>
+          <div class="sp-text">
+            <div class="sp-title">PawPark Safety Promise</div>
+            <div class="sp-body">Every bay is sanitized between stays. CCTV footage stored 72 hours. Instant staff alert if your dog needs attention.</div>
+          </div>
         </div>
       </div>
-      <div class="sticky-bottom">
-        <button class="btn-primary full" onclick="startBooking()">Book this station</button>
+      <div style="height:90px;"></div>
+    </div>
+    <div class="float-cta">
+      <button class="btn-cta" onclick="startBooking()">Book this station &nbsp;🐾</button>
+    </div>
+  </div>
+
+  <!-- ░░ CCTV MODAL ░░ -->
+  <div id="cctvModal" class="modal-overlay hidden" onclick="hideCCTVModal()">
+    <div class="cctv-modal-card" onclick="event.stopPropagation()">
+      <div class="cctv-modal-header">
+        <div class="live-badge"><span class="live-dot"></span> LIVE FEED</div>
+        <button class="modal-close" onclick="hideCCTVModal()">✕</button>
+      </div>
+      <div class="cctv-modal-screen">
+        <div class="cctv-scanline"></div>
+        <div class="cctv-modal-dog">🐶</div>
+        <div class="cctv-corner tl"></div>
+        <div class="cctv-corner tr"></div>
+        <div class="cctv-corner bl"></div>
+        <div class="cctv-corner br"></div>
+        <div class="cctv-timestamp" id="cctvTime">00:00:00</div>
+      </div>
+      <div class="cctv-modal-note">Full CCTV access available after check-in. Stream secured with your booking QR.</div>
+    </div>
+  </div>
+
+  <!-- ░░ BOOK STEP 1 — Station ░░ -->
+  <div id="screen-book1" class="screen">
+    <div class="sub-topbar">
+      <button class="back-btn" onclick="showScreen('screen-home')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <span class="sub-title">Choose station</span>
+      <span class="step-pill">1 / 6</span>
+    </div>
+    <div class="step-track"><div class="step-fill" style="width:16.6%"></div></div>
+    <div class="screen-scroll pad-screen">
+      <div class="book-heading">Which station?</div>
+      <div class="station-opt selected" id="bsOpt1" onclick="selectStation('SM North Edsa','bsOpt1')">
+        <span class="sopt-icon">🏪</span>
+        <div class="sopt-info"><div class="sopt-name">PawPark SM North</div><div class="sopt-meta">0.3 km · 4 slots</div></div>
+        <div class="sopt-check" id="bsChk1">✓</div>
+      </div>
+      <div class="station-opt" id="bsOpt2" onclick="selectStation('Trinoma','bsOpt2')">
+        <span class="sopt-icon">🏬</span>
+        <div class="sopt-info"><div class="sopt-name">PawPark Trinoma</div><div class="sopt-meta">0.7 km · 2 slots</div></div>
+        <div class="sopt-check" id="bsChk2">✓</div>
+      </div>
+      <div class="station-opt" id="bsOpt3" onclick="selectStation('Robinsons Galleria','bsOpt3')">
+        <span class="sopt-icon">🛍️</span>
+        <div class="sopt-info"><div class="sopt-name">PawPark Robinsons</div><div class="sopt-meta">1.2 km · 6 slots</div></div>
+        <div class="sopt-check" id="bsChk3">✓</div>
       </div>
     </div>
+    <div class="float-cta"><button class="btn-cta" onclick="goStep(2)">Next →</button></div>
+  </div>
 
-    <!-- SCREEN 4: BOOKING STEP 1 — Choose Station -->
-    <div id="screen-book1" class="screen">
-      <div class="topbar">
-        <button class="back-btn" onclick="showScreen('screen-home')">‹ Back</button>
-        <span class="topbar-center">Choose station</span>
-        <span class="step-counter">1/6</span>
+  <!-- ░░ BOOK STEP 2 — Pet Details ░░ -->
+  <div id="screen-book2" class="screen">
+    <div class="sub-topbar">
+      <button class="back-btn" onclick="goStep(1)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <span class="sub-title">Your pup</span>
+      <span class="step-pill">2 / 6</span>
+    </div>
+    <div class="step-track"><div class="step-fill" style="width:33.3%"></div></div>
+    <div class="screen-scroll pad-screen">
+      <div class="book-heading">Tell us about your pup</div>
+      <div class="field-lbl">Dog's name</div>
+      <input type="text" class="field-input" id="dogName" placeholder="e.g. Choco" />
+      <div class="field-lbl">Size</div>
+      <div class="size-row">
+        <div class="size-opt sel" id="szS" onclick="selectSize('S')">Small<span>≤7 kg</span></div>
+        <div class="size-opt" id="szM" onclick="selectSize('M')">Medium<span>7–20 kg</span></div>
+        <div class="size-opt" id="szL" onclick="selectSize('L')">Large<span>&gt;20 kg</span></div>
       </div>
-      <div class="step-progress"><div class="step-fill" style="width:16.6%"></div></div>
-      <div class="book-body">
-        <div class="book-section-title">Which station?</div>
-        <div class="book-station-opt selected" id="bsOpt1" onclick="selectStation('SM North Edsa', 'bsOpt1')">
-          <div class="bso-icon">🏪</div>
-          <div class="bso-info">
-            <div class="bso-name">PawPark SM North</div>
-            <div class="bso-meta">0.3 km · 4 slots open</div>
-          </div>
-          <div class="bso-check" id="bsChk1">✓</div>
+      <div class="field-lbl">Notes <span class="opt-lbl">optional</span></div>
+      <textarea class="field-input field-ta" id="petNotes" placeholder="Anxious around strangers? Loves belly rubs? Let the staff know."></textarea>
+      <div class="field-lbl">Photo <span class="opt-lbl">optional</span></div>
+      <label class="photo-drop" for="petPhoto">
+        <span id="photoLabel">📷 &nbsp;Add a photo of your dog</span>
+        <input type="file" id="petPhoto" accept="image/*" style="display:none" onchange="handlePhoto(this)" />
+      </label>
+    </div>
+    <div class="float-cta"><button class="btn-cta" onclick="goStep(3)">Next →</button></div>
+  </div>
+
+  <!-- ░░ BOOK STEP 3 — Duration ░░ -->
+  <div id="screen-book3" class="screen">
+    <div class="sub-topbar">
+      <button class="back-btn" onclick="goStep(2)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <span class="sub-title">Duration</span>
+      <span class="step-pill">3 / 6</span>
+    </div>
+    <div class="step-track"><div class="step-fill" style="width:50%"></div></div>
+    <div class="screen-scroll pad-screen">
+      <div class="book-heading">How long?</div>
+      <div class="dur-grid">
+        <div class="dur-card sel" id="dur30" onclick="selectDur('30 mins',80,'dur30')">
+          <div class="dur-t">30 min</div><div class="dur-p">₱80</div>
         </div>
-        <div class="book-station-opt" id="bsOpt2" onclick="selectStation('Trinoma', 'bsOpt2')">
-          <div class="bso-icon">🏬</div>
-          <div class="bso-info">
-            <div class="bso-name">PawPark Trinoma</div>
-            <div class="bso-meta">0.7 km · 2 slots open</div>
-          </div>
-          <div class="bso-check" id="bsChk2"></div>
+        <div class="dur-card" id="dur60" onclick="selectDur('1 hour',130,'dur60')">
+          <div class="dur-t">1 hour</div><div class="dur-p">₱130</div>
         </div>
-        <div class="book-station-opt" id="bsOpt3" onclick="selectStation('Robinsons Galleria', 'bsOpt3')">
-          <div class="bso-icon">🛍️</div>
-          <div class="bso-info">
-            <div class="bso-name">PawPark Robinsons</div>
-            <div class="bso-meta">1.2 km · 6 slots open</div>
-          </div>
-          <div class="bso-check" id="bsChk3"></div>
+        <div class="dur-card" id="dur120" onclick="selectDur('2 hours',220,'dur120')">
+          <div class="dur-t">2 hours</div><div class="dur-p">₱220</div>
+        </div>
+        <div class="dur-card" id="durCustom" onclick="selectDur('Custom',0,'durCustom')">
+          <div class="dur-t">Custom</div><div class="dur-p">varies</div>
         </div>
       </div>
-      <div class="sticky-bottom">
-        <button class="btn-primary full" onclick="goStep(2)">Next →</button>
+      <div id="customWrap" class="hidden">
+        <div class="field-lbl">Minutes</div>
+        <input type="number" class="field-input" id="customMins" placeholder="e.g. 90" min="15" max="480" oninput="calcCustom(this.value)" />
+      </div>
+      <div class="info-pill">⏰ Minimum 2-hour advance booking required</div>
+    </div>
+    <div class="float-cta"><button class="btn-cta" onclick="goStep(4)">Next →</button></div>
+  </div>
+
+  <!-- ░░ BOOK STEP 4 — Food ░░ -->
+  <div id="screen-book4" class="screen">
+    <div class="sub-topbar">
+      <button class="back-btn" onclick="goStep(3)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <span class="sub-title">Food & treats</span>
+      <span class="step-pill">4 / 6</span>
+    </div>
+    <div class="step-track"><div class="step-fill" style="width:66.6%"></div></div>
+    <div class="screen-scroll pad-screen">
+      <div class="book-heading">Feeding during stay</div>
+      <div class="food-opt sel" id="foodStation" onclick="selectFood('Station food (+₱50)',50,'foodStation')">
+        <span class="food-ico">🍖</span>
+        <div class="food-body"><div class="food-name">Station food</div><div class="food-meta">Dry kibble + fresh water · +₱50</div></div>
+        <div class="food-dot sel-dot" id="fdStation"></div>
+      </div>
+      <div class="food-opt" id="foodTreats" onclick="selectFood('Treats pack (+₱30)',30,'foodTreats')">
+        <span class="food-ico">🦴</span>
+        <div class="food-body"><div class="food-name">Treats pack</div><div class="food-meta">Assorted dog treats · +₱30</div></div>
+        <div class="food-dot" id="fdTreats"></div>
+      </div>
+      <div class="food-opt" id="foodOwn" onclick="selectFood('Own food (free)',0,'foodOwn')">
+        <span class="food-ico">🥣</span>
+        <div class="food-body"><div class="food-name">Bring own food</div><div class="food-meta">Staff feeds per your instructions</div></div>
+        <div class="food-dot" id="fdOwn"></div>
+      </div>
+      <div class="food-opt" id="foodNone" onclick="selectFood('No food needed',0,'foodNone')">
+        <span class="food-ico">💧</span>
+        <div class="food-body"><div class="food-name">Water only</div><div class="food-meta">Fresh water provided always</div></div>
+        <div class="food-dot" id="fdNone"></div>
+      </div>
+      <div class="field-lbl" style="margin-top:16px;">Dietary notes <span class="opt-lbl">optional</span></div>
+      <input type="text" class="field-input" id="dietaryNotes" placeholder="e.g. grain-free only, no chicken…" />
+    </div>
+    <div class="float-cta"><button class="btn-cta" onclick="goStep(5)">Next →</button></div>
+  </div>
+
+  <!-- ░░ BOOK STEP 5 — Schedule ░░ -->
+  <div id="screen-book5" class="screen">
+    <div class="sub-topbar">
+      <button class="back-btn" onclick="goStep(4)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <span class="sub-title">Schedule</span>
+      <span class="step-pill">5 / 6</span>
+    </div>
+    <div class="step-track"><div class="step-fill" style="width:83.3%"></div></div>
+    <div class="screen-scroll pad-screen">
+      <div class="book-heading">When do you arrive?</div>
+      <div class="field-lbl">Drop-off date</div>
+      <input type="date" class="field-input" id="dropDate" />
+      <div class="field-lbl">Drop-off time</div>
+      <input type="time" class="field-input" id="dropTime" />
+      <div class="field-lbl">Estimated pick-up</div>
+      <input type="time" class="field-input" id="pickTime" />
+      <div class="info-pill">⚠️ Book at least 2 hours before drop-off</div>
+      <div class="info-pill warn-pill">📲 You'll get a notification 30 mins before drop-off</div>
+    </div>
+    <div class="float-cta"><button class="btn-cta" onclick="goStep(6)">Review booking →</button></div>
+  </div>
+
+  <!-- ░░ BOOK STEP 6 — Summary ░░ -->
+  <div id="screen-book6" class="screen">
+    <div class="sub-topbar">
+      <button class="back-btn" onclick="goStep(5)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <span class="sub-title">Review & pay</span>
+      <span class="step-pill">6 / 6</span>
+    </div>
+    <div class="step-track"><div class="step-fill" style="width:100%"></div></div>
+    <div class="screen-scroll pad-screen">
+      <div class="book-heading">Almost there!</div>
+      <div class="summary-bubble">
+        <div class="sum-row"><span class="sum-k">Station</span><span class="sum-v" id="sumStation">—</span></div>
+        <div class="sum-row"><span class="sum-k">Pet</span><span class="sum-v" id="sumPet">—</span></div>
+        <div class="sum-row"><span class="sum-k">Duration</span><span class="sum-v" id="sumDur">—</span></div>
+        <div class="sum-row"><span class="sum-k">Food</span><span class="sum-v" id="sumFood">—</span></div>
+        <div class="sum-row"><span class="sum-k">Schedule</span><span class="sum-v" id="sumSchedule">—</span></div>
+        <div class="sum-divider"></div>
+        <div class="sum-row total-row">
+          <span class="sum-k total-k">Total</span>
+          <span class="sum-v total-v" id="sumTotal">₱0</span>
+        </div>
+      </div>
+
+      <div class="field-lbl">Payment</div>
+      <div class="pay-row">
+        <div class="pay-opt sel" id="payGcash" onclick="selectPay('payGcash')">💸 GCash</div>
+        <div class="pay-opt" id="payMaya" onclick="selectPay('payMaya')">💳 Maya</div>
+        <div class="pay-opt" id="payCash" onclick="selectPay('payCash')">💵 Cash</div>
+      </div>
+
+      <div class="safety-promise" style="margin-top:16px;">
+        <div class="sp-icon">📹</div>
+        <div class="sp-text">
+          <div class="sp-title">CCTV access included</div>
+          <div class="sp-body">Watch your dog live from the app. Stream link sent with your booking QR after check-in.</div>
+        </div>
       </div>
     </div>
+    <div class="float-cta"><button class="btn-cta" onclick="confirmBooking()">Confirm &amp; pay 🐾</button></div>
+  </div>
 
-    <!-- SCREEN 5: BOOKING STEP 2 — Pet Details -->
-    <div id="screen-book2" class="screen">
-      <div class="topbar">
-        <button class="back-btn" onclick="goStep(1)">‹ Back</button>
-        <span class="topbar-center">Pet details</span>
-        <span class="step-counter">2/6</span>
-      </div>
-      <div class="step-progress"><div class="step-fill" style="width:33.3%"></div></div>
-      <div class="book-body">
-        <div class="book-section-title">Tell us about your pup</div>
-        <div class="field-label">Dog name</div>
-        <input type="text" class="text-input" id="dogName" placeholder="e.g. Choco" />
-        <div class="field-label">Size</div>
-        <div class="size-row">
-          <div class="size-opt selected" id="szS" onclick="selectSize('S')">Small<br><span>≤7 kg</span></div>
-          <div class="size-opt" id="szM" onclick="selectSize('M')">Medium<br><span>7–20 kg</span></div>
-          <div class="size-opt" id="szL" onclick="selectSize('L')">Large<br><span>&gt;20 kg</span></div>
-        </div>
-        <div class="field-label">Temperament / notes <span class="optional">optional</span></div>
-        <textarea class="text-input textarea" id="petNotes" placeholder="e.g. anxious around strangers, loves belly rubs…"></textarea>
-        <div class="field-label">Photo <span class="optional">optional</span></div>
-        <label class="photo-upload" for="petPhoto">
-          <span id="photoLabel">📷 Tap to add photo</span>
-          <input type="file" id="petPhoto" accept="image/*" style="display:none" onchange="handlePhoto(this)" />
-        </label>
-      </div>
-      <div class="sticky-bottom">
-        <button class="btn-primary full" onclick="goStep(3)">Next →</button>
-      </div>
-    </div>
-
-    <!-- SCREEN 6: BOOKING STEP 3 — Duration -->
-    <div id="screen-book3" class="screen">
-      <div class="topbar">
-        <button class="back-btn" onclick="goStep(2)">‹ Back</button>
-        <span class="topbar-center">Duration</span>
-        <span class="step-counter">3/6</span>
-      </div>
-      <div class="step-progress"><div class="step-fill" style="width:50%"></div></div>
-      <div class="book-body">
-        <div class="book-section-title">How long will you be?</div>
-        <div class="dur-grid">
-          <div class="dur-opt selected" id="dur30" onclick="selectDur('30 mins', 80, 'dur30')">
-            <div class="dur-time">30 min</div>
-            <div class="dur-price">₱80</div>
-          </div>
-          <div class="dur-opt" id="dur60" onclick="selectDur('1 hour', 130, 'dur60')">
-            <div class="dur-time">1 hour</div>
-            <div class="dur-price">₱130</div>
-          </div>
-          <div class="dur-opt" id="dur120" onclick="selectDur('2 hours', 220, 'dur120')">
-            <div class="dur-time">2 hours</div>
-            <div class="dur-price">₱220</div>
-          </div>
-          <div class="dur-opt" id="durCustom" onclick="selectDur('Custom', 0, 'durCustom')">
-            <div class="dur-time">Custom</div>
-            <div class="dur-price">varies</div>
-          </div>
-        </div>
-        <div id="customTimeWrap" class="hidden" style="margin-top:12px;">
-          <div class="field-label">Enter duration (minutes)</div>
-          <input type="number" class="text-input" id="customMins" placeholder="e.g. 90" min="15" max="480" oninput="calcCustom(this.value)" />
-        </div>
-        <div class="info-note">⏰ Book at least 2 hours before drop-off</div>
-      </div>
-      <div class="sticky-bottom">
-        <button class="btn-primary full" onclick="goStep(4)">Next →</button>
-      </div>
-    </div>
-
-    <!-- SCREEN 7: BOOKING STEP 4 — Food -->
-    <div id="screen-book4" class="screen">
-      <div class="topbar">
-        <button class="back-btn" onclick="goStep(3)">‹ Back</button>
-        <span class="topbar-center">Food & treats</span>
-        <span class="step-counter">4/6</span>
-      </div>
-      <div class="step-progress"><div class="step-fill" style="width:66.6%"></div></div>
-      <div class="book-body">
-        <div class="book-section-title">Feeding during stay</div>
-        <div class="food-opt selected" id="foodStation" onclick="selectFood('Station food (+₱50)', 50, 'foodStation')">
-          <div class="food-icon">🍖</div>
-          <div class="food-info">
-            <div class="food-name">Station food</div>
-            <div class="food-meta">Dry kibble + water · +₱50</div>
-          </div>
-          <div class="food-radio selected-radio" id="fradStation">●</div>
-        </div>
-        <div class="food-opt" id="foodTreats" onclick="selectFood('Treats pack (+₱30)', 30, 'foodTreats')">
-          <div class="food-icon">🦴</div>
-          <div class="food-info">
-            <div class="food-name">Treats pack</div>
-            <div class="food-meta">Assorted dog treats · +₱30</div>
-          </div>
-          <div class="food-radio" id="fradTreats">○</div>
-        </div>
-        <div class="food-opt" id="foodOwn" onclick="selectFood('Own food', 0, 'foodOwn')">
-          <div class="food-icon">🥣</div>
-          <div class="food-info">
-            <div class="food-name">Bring own food</div>
-            <div class="food-meta">We'll feed per your instructions</div>
-          </div>
-          <div class="food-radio" id="fradOwn">○</div>
-        </div>
-        <div class="food-opt" id="foodNone" onclick="selectFood('No food needed', 0, 'foodNone')">
-          <div class="food-icon">🚫</div>
-          <div class="food-info">
-            <div class="food-name">No food needed</div>
-            <div class="food-meta">Water only</div>
-          </div>
-          <div class="food-radio" id="fradNone">○</div>
-        </div>
-        <div class="field-label" style="margin-top:14px;">Dietary notes <span class="optional">optional</span></div>
-        <input type="text" class="text-input" id="dietaryNotes" placeholder="e.g. grain-free only, no chicken…" />
-      </div>
-      <div class="sticky-bottom">
-        <button class="btn-primary full" onclick="goStep(5)">Next →</button>
-      </div>
-    </div>
-
-    <!-- SCREEN 8: BOOKING STEP 5 — Schedule -->
-    <div id="screen-book5" class="screen">
-      <div class="topbar">
-        <button class="back-btn" onclick="goStep(4)">‹ Back</button>
-        <span class="topbar-center">Schedule</span>
-        <span class="step-counter">5/6</span>
-      </div>
-      <div class="step-progress"><div class="step-fill" style="width:83.3%"></div></div>
-      <div class="book-body">
-        <div class="book-section-title">When do you arrive?</div>
-        <div class="field-label">Drop-off date</div>
-        <input type="date" class="text-input" id="dropDate" />
-        <div class="field-label" style="margin-top:12px;">Drop-off time</div>
-        <input type="time" class="text-input" id="dropTime" />
-        <div class="field-label" style="margin-top:12px;">Pick-up time</div>
-        <input type="time" class="text-input" id="pickTime" />
-        <div class="info-note">⚠️ Minimum 2-hour advance booking required</div>
-        <div class="info-note" style="background:#FEF3C7;color:#92400E;border-color:#FCD34D;">📲 You'll get a reminder 30 mins before drop-off</div>
-      </div>
-      <div class="sticky-bottom">
-        <button class="btn-primary full" onclick="goStep(6)">Review booking →</button>
-      </div>
-    </div>
-
-    <!-- SCREEN 9: BOOKING STEP 6 — Summary + Payment -->
-    <div id="screen-book6" class="screen">
-      <div class="topbar">
-        <button class="back-btn" onclick="goStep(5)">‹ Back</button>
-        <span class="topbar-center">Review & pay</span>
-        <span class="step-counter">6/6</span>
-      </div>
-      <div class="step-progress"><div class="step-fill" style="width:100%"></div></div>
-      <div class="book-body">
-        <div class="summary-card">
-          <div class="summary-row">
-            <span class="sum-label">Station</span>
-            <span class="sum-value" id="sumStation">PawPark SM North</span>
-          </div>
-          <div class="summary-row">
-            <span class="sum-label">Pet</span>
-            <span class="sum-value" id="sumPet">—</span>
-          </div>
-          <div class="summary-row">
-            <span class="sum-label">Duration</span>
-            <span class="sum-value" id="sumDur">30 mins</span>
-          </div>
-          <div class="summary-row">
-            <span class="sum-label">Food</span>
-            <span class="sum-value" id="sumFood">Station food</span>
-          </div>
-          <div class="summary-row">
-            <span class="sum-label">Schedule</span>
-            <span class="sum-value" id="sumSchedule">—</span>
-          </div>
-          <div class="summary-divider"></div>
-          <div class="summary-row total-row">
-            <span class="sum-label total-label">Total</span>
-            <span class="sum-value total-val" id="sumTotal">₱130</span>
-          </div>
-        </div>
-        <div class="field-label" style="margin-top:16px;">Payment method</div>
-        <div class="pay-row">
-          <div class="pay-opt selected" id="payGcash" onclick="selectPay('payGcash')">
-            <span>💸 GCash</span>
-          </div>
-          <div class="pay-opt" id="payMaya" onclick="selectPay('payMaya')">
-            <span>💳 Maya</span>
-          </div>
-          <div class="pay-opt" id="payCash" onclick="selectPay('payCash')">
-            <span>💵 Cash</span>
-          </div>
-        </div>
-      </div>
-      <div class="sticky-bottom">
-        <button class="btn-primary full" onclick="confirmBooking()">Confirm & pay 🐾</button>
-      </div>
-    </div>
-
-    <!-- SCREEN 10: CONFIRMATION -->
-    <div id="screen-confirm" class="screen">
-      <div class="confirm-inner">
-        <div class="confirm-anim" id="confirmAnim">🐾</div>
+  <!-- ░░ CONFIRMATION ░░ -->
+  <div id="screen-confirm" class="screen">
+    <div class="blob blob-confirm-1"></div>
+    <div class="blob blob-confirm-2"></div>
+    <div class="screen-scroll">
+      <div class="confirm-wrap">
+        <div class="confirm-paw" id="confirmPaw">🐾</div>
         <div class="confirm-title">You're all set!</div>
         <div class="confirm-sub">Your pup has a spot waiting.</div>
-        <div class="qr-wrap">
-          <div class="qr-label">Drop-off QR code</div>
-          <div class="qr-box">
-            <svg width="100" height="100" viewBox="0 0 100 100">
-              <rect x="5" y="5" width="35" height="35" fill="none" stroke="#EA580C" stroke-width="3" rx="3"/>
-              <rect x="15" y="15" width="15" height="15" fill="#EA580C" rx="1"/>
-              <rect x="60" y="5" width="35" height="35" fill="none" stroke="#EA580C" stroke-width="3" rx="3"/>
-              <rect x="70" y="15" width="15" height="15" fill="#EA580C" rx="1"/>
-              <rect x="5" y="60" width="35" height="35" fill="none" stroke="#EA580C" stroke-width="3" rx="3"/>
-              <rect x="15" y="70" width="15" height="15" fill="#EA580C" rx="1"/>
-              <rect x="55" y="55" width="7" height="7" fill="#EA580C"/>
-              <rect x="68" y="55" width="7" height="7" fill="#EA580C"/>
-              <rect x="81" y="55" width="7" height="7" fill="#EA580C"/>
-              <rect x="55" y="68" width="7" height="7" fill="#EA580C"/>
-              <rect x="55" y="81" width="7" height="7" fill="#EA580C"/>
-              <rect x="68" y="74" width="7" height="7" fill="#EA580C"/>
-              <rect x="81" y="68" width="7" height="7" fill="#EA580C"/>
-              <rect x="81" y="81" width="7" height="7" fill="#EA580C"/>
+
+        <div class="qr-bubble">
+          <div class="qr-eyebrow">Drop-off QR code</div>
+          <div class="qr-frame">
+            <svg width="110" height="110" viewBox="0 0 100 100">
+              <rect x="5" y="5" width="35" height="35" fill="none" stroke="#F0615A" stroke-width="3" rx="3"/>
+              <rect x="15" y="15" width="15" height="15" fill="#F0615A" rx="1"/>
+              <rect x="60" y="5" width="35" height="35" fill="none" stroke="#F0615A" stroke-width="3" rx="3"/>
+              <rect x="70" y="15" width="15" height="15" fill="#F0615A" rx="1"/>
+              <rect x="5" y="60" width="35" height="35" fill="none" stroke="#F0615A" stroke-width="3" rx="3"/>
+              <rect x="15" y="70" width="15" height="15" fill="#F0615A" rx="1"/>
+              <rect x="55" y="55" width="7" height="7" fill="#F0615A"/>
+              <rect x="68" y="55" width="7" height="7" fill="#F0615A"/>
+              <rect x="81" y="55" width="7" height="7" fill="#F0615A"/>
+              <rect x="55" y="68" width="7" height="7" fill="#F0615A"/>
+              <rect x="55" y="81" width="7" height="7" fill="#F0615A"/>
+              <rect x="68" y="74" width="7" height="7" fill="#F0615A"/>
+              <rect x="81" y="68" width="7" height="7" fill="#F0615A"/>
+              <rect x="81" y="81" width="7" height="7" fill="#F0615A"/>
             </svg>
           </div>
-          <div class="qr-id" id="bookingId">#PP-00000</div>
+          <div class="qr-code-id" id="bookingId">#PP-00000</div>
         </div>
-        <div class="confirm-instructions">
-          <div class="ci-step">1. Arrive at the station with your dog</div>
-          <div class="ci-step">2. Show this QR at the front desk</div>
-          <div class="ci-step">3. Staff will check you in</div>
-          <div class="ci-step">4. Enjoy your time! Pick up on schedule</div>
+
+        <!-- CCTV access card on confirmation -->
+        <div class="cctv-confirm-card" onclick="showCCTVModal()">
+          <div class="live-badge"><span class="live-dot"></span> LIVE</div>
+          <div class="cctv-confirm-text">
+            <div class="cctv-confirm-title">Watch your dog</div>
+            <div class="cctv-confirm-sub">Tap to open live CCTV feed</div>
+          </div>
+          <div class="cctv-confirm-icon">📹</div>
         </div>
-        <button class="btn-primary full" onclick="showScreen('screen-home')" style="margin-top:20px;">Back to home 🏠</button>
+
+        <div class="steps-list">
+          <div class="step-item"><span class="step-num">1</span>Arrive at the station with your dog</div>
+          <div class="step-item"><span class="step-num">2</span>Show this QR at the front desk</div>
+          <div class="step-item"><span class="step-num">3</span>Staff checks you in — you're free to go</div>
+          <div class="step-item"><span class="step-num">4</span>Watch via CCTV · Pick up on time</div>
+        </div>
+
+        <button class="btn-cta full-btn" onclick="showScreen('screen-home')" style="margin-top:24px;">Back to home</button>
       </div>
     </div>
+  </div>
 
-    <!-- SCREEN 11: MY BOOKINGS -->
-    <div id="screen-bookings" class="screen">
-      <div class="topbar">
-        <button class="back-btn" onclick="showScreen('screen-home')">‹ Back</button>
-        <span class="topbar-center">My bookings</span>
-        <span></span>
-      </div>
-      <div class="book-body">
-        <div id="bookingsList"></div>
-        <div id="noBookings" class="empty-state">
-          <div style="font-size:48px;text-align:center;margin-bottom:12px;">🐾</div>
-          <div style="text-align:center;color:#A16207;font-size:15px;">No bookings yet.<br>Book a spot for your pup!</div>
-          <button class="btn-primary full" style="margin-top:16px;" onclick="startBooking()">Book now</button>
-        </div>
+  <!-- ░░ MY BOOKINGS ░░ -->
+  <div id="screen-bookings" class="screen">
+    <div class="sub-topbar">
+      <button class="back-btn" onclick="showScreen('screen-home')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <span class="sub-title">My bookings</span>
+      <span style="width:36px;"></span>
+    </div>
+    <div class="screen-scroll pad-screen">
+      <div id="bookingsList"></div>
+      <div id="noBookings" class="empty-wrap">
+        <div class="empty-paw">🐾</div>
+        <div class="empty-msg">No bookings yet.<br>Your pup is waiting!</div>
+        <button class="btn-cta" style="margin-top:20px;" onclick="startBooking()">Book a spot</button>
       </div>
     </div>
+  </div>
 
-  </div><!-- #app -->
-
-  <script src="pawpark.js"></script>
+</div><!-- #app -->
+<script src="pawpark.js"></script>
 </body>
 </html>
